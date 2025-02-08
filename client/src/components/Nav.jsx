@@ -15,7 +15,7 @@ const Nav = () => {
         {['Home', 'Blogs', 'PYQs', 'Career', 'Others'].map((tab) => (
           <li key={tab} onClick={() => {
             handleTabClick(tab)
-            navigate(tab.toLowerCase())
+            navigate(`/${tab.toLowerCase()}`);
             }} className="cursor-pointer">
             <span className="flex items-center justify-center px-8 py-3 relative ">
               <p className="z-10">{tab}</p>
