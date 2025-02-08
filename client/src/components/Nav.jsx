@@ -10,7 +10,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 md:w-[70vw] w-[90vw] md:h-[12vh] h-[6vh] rounded-2xl md:rounded-3xl flex items-center border-yellow-500 border-b-2 md:border-b-4">
+    <nav className="absolute bottom-10 left-1/2 -translate-x-1/2 md:w-[70vw] w-[90vw] md:h-[12vh] h-[6vh] rounded-2xl md:rounded-3xl flex items-center border-yellow-500 border-b-2 md:border-b-4">
       <ul className="w-full flex justify-between md:text-xl px-2 md:px-16 md:gap-7 text-sm">
         {['Home', 'Blogs', 'PYQs', 'Career', 'Others'].map((tab) => (
           <li key={tab} onClick={() => {
