@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ShowPyqs from './ShowPyqs'
 
 const Pyq = () => {
+  const [show, setShow] = useState(false);
+  const handleclick = () => {
+    setShow(!show);
+  }
   return (
     <section className=' w-screen h-screen relative'>
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 md:w-[40%] w-[85%] border-[#EFC740] border-2 shadow-md shadow-black/20 flex items-center justify-center flex-col gap-5 rounded-3xl  bg-[#FFF4CE] py-20 '>
@@ -11,11 +16,15 @@ const Pyq = () => {
           <select className=' w-[200px] py-2 border-[#EFC740] border-2 px-4 rounded-xl'  name="" id="">
           <option value="" disabled selected>Select Subject</option>
           </select>
-          <button className=' w-[200px] shadow-sm shadow-white/20 text-white bg-[#f5c72f] py-2 px-4 rounded-xl'>
+          <button onClick={()=>handleclick()} className=' w-[200px] shadow-sm shadow-white/20 text-white bg-[#f5c72f] py-2 px-4 rounded-xl'>
             Done
           </button>
         </div>
 
+        {
+          show &&  <ShowPyqs handleclick={handleclick} />
+        }
+        
         
     </section>
   )
