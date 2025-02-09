@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tab, setTab] = useState("blog");
+  const [files, setFiles] = useState([]);
+
+  const handleFileUpload = (event) => {
+    setFiles([...files, ...event.target.files]);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button
+          onClick={() => setTab("blog")}
+          style={{
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            background: tab === "blog" ? "#007bff" : "#ddd",
+            color: tab === "blog" ? "white" : "black",
+          }}
+        >
+          Blog
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button
+          onClick={() => setTab("pyq")}
+          style={{
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            background: tab === "pyq" ? "#007bff" : "#ddd",
+            color: tab === "pyq" ? "white" : "black",
+          }}
+        >
+          PYQ
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      {/* Content */}
+      {tab === "blog" && <div><h2>Blog Section</h2><p>Write your blog here...</p></div>}
+
+      {tab === "pyq" && (
+        <div>
+          <h2>Upload PYQs</h2>
+          <input
+            type="file"
+            multiple
+            onChange={handleFileUpload}
+            style={{ marginBottom: "10px" }}
+          />
+          <ul>
+            {files.map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
