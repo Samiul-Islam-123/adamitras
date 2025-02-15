@@ -4,20 +4,22 @@ const Logger = require('../utils/Logger');
 const APIRouter = express.Router();
 const cloudinary = require('../config/cloudinaryConfig');
 const authenticateToken = require('../middleware/auth');
+const PYQModel = require('../models/PYQModel');
 
 var logger = new Logger();
 
-APIRouter.post("/upload", authenticateToken, upload.array("files", 10), async (req, res) => {
+APIRouter.post("/upload", upload.array("files", 10), async (req, res) => {//middleware not used. only for testing :)
+    const role = req.body.role;
     try {
 
-        if (!req.user)
+        if (role==="student")
             return res.json({
                 success: false,
-                message: "User not allowed"
+                message: "Student are not allowed to upload PYQs"
             })
 
         if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ success: false, message: "Files are required" });
+            return res.json({ success: false, message: "Files are required" });
         }
 
         const uploadedFiles = [];
@@ -52,8 +54,38 @@ APIRouter.post("/upload", authenticateToken, upload.array("files", 10), async (r
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Upload failed", error: error.message });
+        res.json({ success: false, message: "Upload failed", error: error.message });
     }
 });
+
+APIRouter.post('/upload-url', async(req,res) =>{
+
+    const {url} = req.body;
+
+    try{
+
+        if(!url)
+            return res.json({
+                success : false,
+                message : "Please provide URL"
+            })
+        const PYQ = new PYQModel({
+            url : url
+        })
+
+        await PYQ.save();
+        res.json({
+            success : true,
+            message : "Done :)"
+        })
+    }
+    catch(error){
+        logger.error(error);
+        res.json({
+            message : error.message,
+            success : false
+        })
+    }
+})
 
 module.exports = APIRouter;
