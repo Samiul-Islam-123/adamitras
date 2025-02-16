@@ -10,6 +10,7 @@ import Login from './Login';
 import Signup from './Signup';
 import axios from "axios";
 import Cookies from "js-cookie"
+import Others from './Others';
 
 const ProtectedRoute = ({ children }) => {
     const { isSignedIn } = useUser();
@@ -63,14 +64,17 @@ const Hero = () => {
     }, [user])
 
     return (
-        <section>
+        <section className=' overflow-clip'>
+            
 
-            <UserButton />
+            
+            
 
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
 
+                <Route path="/home" element={<Home />} />
+                <Route path="/others" element={<Others />} />
 
                 <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />

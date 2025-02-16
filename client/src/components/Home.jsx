@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import gsap from "gsap";
 
 const Home = () => {
-  return (
-    <section className=' w-screen h-screen justify-center items-center flex flex-col'>
-        <h1 className=' text-[3.5vw] mb-2'>Adamitras</h1>
-        <p className=' text-[1.2vw] mb-10'>Your Digital Senior</p>
-    </section>
-  )
-}
+    
 
-export default Home
+    return (
+        <section className=" w-screen h-screen justify-center items-center flex flex-col overflow-hidden">
+            
+
+            <span className=" md:-mt-20">
+                <h1 className=" md:text-[8.5vw] text-[20vw] mb-2 vina-sans">Adamitras</h1>
+            </span>
+            <p className=" md:text-[2.2vw] text-[6vw] mb-10 hurricane">Your Digital Senior</p>
+        </section>
+    );
+};
+
+export default Home;
