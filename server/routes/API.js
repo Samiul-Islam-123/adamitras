@@ -88,4 +88,18 @@ APIRouter.post('/upload-url', async(req,res) =>{
     }
 })
 
+APIRouter.get('/pyq', async(req, res) => {
+    try {
+        const PYQs =await PYQModel.find();
+        res.json({PYQs});
+    }
+    catch(error){
+        logger.error(error);
+        return res.json({
+            message : error.message,
+            success : false
+        })
+    }
+})
+
 module.exports = APIRouter;
