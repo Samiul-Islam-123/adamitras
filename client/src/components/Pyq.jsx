@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
 import ShowPyqs from './ShowPyqs'
+import axios from "axios"
 
 const Pyq = () => {
+  
+  const fetchData = async() => {
+    const response = await axios.get(`${import.meta.env.VITE_API}/api`)
+  }
+
   const [show, setShow] = useState(false);
   const handleclick = () => {
+
+
+
     setShow(!show);
   }
   return (
