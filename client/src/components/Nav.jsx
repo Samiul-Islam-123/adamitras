@@ -11,7 +11,7 @@ const Nav = () => {
 
   return (
     <nav className="absolute bottom-10 left-1/2 -translate-x-1/2 md:w-[80vw] w-[90vw] lg:w-[70vw] md:h-[12vh] h-[6vh] rounded-2xl md:rounded-3xl flex items-center border-yellow-500 border-b-2 md:border-b-4">
-      <ul className="w-full flex justify-between md:text-xl px-2 lg:px-16  text-sm">
+      <ul className="w-full flex justify-between md:text-xl px-2 lg:px-16  ">
         {['Home', 'Blogs', 'PYQs', 'Career', 'Others'].map((tab) => (
           <li key={tab} onClick={() => {
             handleTabClick(tab)
