@@ -2,9 +2,9 @@ import React from "react";
 
 const About = () => {
     return (
-        <section className=" w-screen h-screen px-[10vw] py-[5vw] flex flex-col overflow-hidden">
-            <h1 className=" text-8xl hurricane">About us</h1>
-            <p className=" text-xl px-[2vw] mt-20 ">
+        <section className=" w-screen min-h-screen md:px-[10vw] px-[6vw] py-[5vw] flex flex-col overflow-hidden">
+            <h1 className=" text-8xl hurricane bg-[url('/assets/bg.png')] bg-no-repeat  bg-cover w-fit">About us</h1>
+            <p className=" md:text-xl text-xs md:px-[2vw] px-1 md:mt-20 mt-10 ">
                 Adamitras is a student-driven platform created by two students
                 from the Batch of 2021-2025 at Adamas University with a simple
                 yet powerful goal—to make academic resources more accessible,
@@ -29,7 +29,7 @@ const About = () => {
                 student community.
             </p>
 
-            <p className=" text-xl px-[2vw] mt-20 ">
+            <p className=" md:text-xl text-xs md:px-[2vw] px-1 mt-20 ">
                 {" "}
                 At Adamitras, we believe that knowledge grows when shared. Our
                 platform fosters a collaborative space where students can not
