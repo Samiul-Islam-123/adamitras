@@ -5,13 +5,14 @@ import axios from "axios"
 const Pyq = () => {
   
   const fetchData = async() => {
-    const response = await axios.get(`${import.meta.env.VITE_API}/api`)
+    const response = await axios.get(`${import.meta.env.VITE_API}/drive/files`);
+    console.log(response)
   }
 
   const [show, setShow] = useState(false);
-  const handleclick = () => {
+  const handleclick =async () => {
 
-
+    await fetchData();
 
     setShow(!show);
   }
