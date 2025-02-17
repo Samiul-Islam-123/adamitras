@@ -41,6 +41,140 @@ DriveRouter.get("/files", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
+
+DriveRouter.get("/subjects/:course/:semester", async (req, res) => {
+  const { course, semester } = req.params;
+
+
+  try {
+    // Get the folder ID for the specified course
+    const courseResponse = await drive.files.list({
+      q: `'${ROOT_FOLDER_ID}' in parents and name = '${course}' and mimeType = 'application/vnd.google-apps.folder'`,
+      fields: "files(id, name)",
+    });
+
+    if (courseResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    const courseFolderId = courseResponse.data.files[0].id;
+
+    // Get the folder ID for the specified semester within the course
+    const semesterResponse = await drive.files.list({
+      q: `'${courseFolderId}' in parents and name = '${semester}' and mimeType = 'application/vnd.google-apps.folder'`,
+      fields: "files(id, name)",
+    });
+
+    if (semesterResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Semester not found" });
+    }
+
+    const semesterFolderId = semesterResponse.data.files[0].id;
+
+    // Fetch subjects (folders) in the semester folder
+    const subjectsResponse = await drive.files.list({
+      q: `'${semesterFolderId}' in parents and mimeType = 'application/vnd.google-apps.folder'`,
+      fields: "files(id, name)",
+    });
+
+    const subjects = subjectsResponse.data.files.map((file) => ({
+      id: file.id,
+      name: file.name,
+    }));
+
+    if (subjects.length === 0) {
+      return res.status(404).json({ error: "No subjects found in this semester" });
+    }
+
+    // Send the list of subjects
+    res.json({ subjects });
+  } catch (error) {
+    console.error("Error fetching subjects:", error);
+    res.status(500).json({ error: "Failed to fetch subjects" });
+  }
+});
+
+
+
+DriveRouter.get("/files/:course/:semester/:subject", async (req, res) => {
+  const { course, semester, subject } = req.params;
+  try {
+    // Fetch course folder ID from root
+    const courseFolderResponse = await drive.files.list({
+      q: `name = '${course}' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (courseFolderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Course folder not found" });
+    }
+
+    const courseFolderId = courseFolderResponse.data.files[0].id;
+
+    // Fetch semester folder ID within course folder
+    const semesterFolderResponse = await drive.files.list({
+      q: `name = '${semester}' and mimeType = 'application/vnd.google-apps.folder' and '${courseFolderId}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (semesterFolderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Semester folder not found" });
+    }
+
+    const semesterFolderId = semesterFolderResponse.data.files[0].id;
+
+    // Fetch subject folder ID within semester folder
+    const subjectFolderResponse = await drive.files.list({
+      q: `name = '${subject}' and mimeType = 'application/vnd.google-apps.folder' and '${semesterFolderId}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (subjectFolderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Subject folder not found" });
+    }
+
+    const subjectFolderId = subjectFolderResponse.data.files[0].id;
+
+    // Fetch all files inside the subject folder
+    const filesResponse = await drive.files.list({
+      q: `'${subjectFolderId}' in parents`,
+      fields: "files(id, name, mimeType, webViewLink, webContentLink)",
+    });
+
+    const files = filesResponse.data.files.map((file) => ({
+      id: file.id,
+      name: file.name,
+      mimeType: file.mimeType,
+      viewLink: file.webViewLink,
+      downloadLink: file.webContentLink,
+    }));
+
+    res.json({ files });
+  } catch (error) {
+    console.error("Error fetching files:", error);
+    res.status(500).json({ error: "Failed to fetch files" });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Search PYQs from a specific semester and subject
  */
@@ -99,5 +233,7 @@ DriveRouter.get('/search/:semester/:subject', async (req, res) => {
     res.status(500).json({ error: "Failed to search PYQs" });
   }
 });
+
+
 
 module.exports = DriveRouter;
