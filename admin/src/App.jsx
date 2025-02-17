@@ -4,7 +4,7 @@ import Panel from './component/Panel'
 import Login from './component/Login'
 import Signup from './component/Signup'
 import { useUser } from '@clerk/clerk-react'
-
+import './index.css'
 const ProtectedRoute = ({ children }) => {
   const { isSignedIn } = useUser();
 
