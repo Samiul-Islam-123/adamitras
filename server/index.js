@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 5500;
 const logger = new Logger();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin : "*"
+}));
 
 dotenv.config();
 
