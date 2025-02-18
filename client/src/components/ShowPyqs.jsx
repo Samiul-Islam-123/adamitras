@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
 
 const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubject }) => {
   const [pyqs, setPyqs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedPdf, setSelectedPdf] = useState(null); // New state for selected PDF
+  const [selectedPdf, setSelectedPdf] = useState(null);
 
   useEffect(() => {
     if (selectedCourse && selectedSemester && selectedSubject) {
@@ -21,11 +19,9 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
     setError(null);
 
     try {
-      console.log(`${import.meta.env.VITE_API_URL}/drive/files/${selectedCourse}/${selectedSemester}/${selectedSubject}`);
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/drive/files/${selectedCourse}/${selectedSemester}/${selectedSubject}`
       );
-      console.log(response.data.files);
       setPyqs(response.data.files);
     } catch (error) {
       setError("Failed to fetch PYQs. Please try again.");
@@ -36,7 +32,14 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
   };
 
   const handleSeeClick = (pdfUrl) => {
-    setSelectedPdf(pdfUrl); // Set the selected PDF URL
+    const match = pdfUrl.match(/\/d\/(.*?)\//);
+    if (match && match[1]) {
+      const fileId = match[1];
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; // ✅ Correct preview URL
+      setSelectedPdf(embedUrl);
+    } else {
+      console.error("Invalid Google Drive URL");
+    }
   };
 
   return (
@@ -47,6 +50,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
             <input
               type="text"
               className="focus:outline-none py-2 md:px-3 px-2 w-60 border-2 border-[#EFC740] rounded-md"
+              placeholder="Search PYQs..."
             />
             <button className="p-3 bg-[#EFC740] rounded-full text-white">
               <FaSearch />
@@ -62,12 +66,12 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
                 {pyqs.length > 0 &&
                   pyqs.map((pyq, index) => (
                     <li
-                      key={index} // Ideally use a unique ID like pyq.id if available
+                      key={index}
                       className="md:mx-16 mx-3 py-3 cursor-pointer flex justify-between border-b border-black/30 text-lg"
                     >
                       <h1 className="font-semibold md:text-lg text-sm">{pyq.name}</h1>
                       <button
-                        onClick={() => handleSeeClick(pyq.viewLink)} // Pass the PDF URL to handleSeeClick
+                        onClick={() => handleSeeClick(pyq.viewLink)}
                         className="md:px-3 md:py-1 px-10 md:text-lg text-sm bg-[#EFC740] rounded-md text-white md:block hidden"
                       >
                         See
@@ -78,25 +82,26 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
             )}
           </div>
         </div>
-        <button onClick={() => handleclick()} className="h-fit w-fit p-3">
+        <button onClick={handleclick} className="h-fit w-fit p-3">
           X
         </button>
       </div>
 
-      {/* Display selected PDF */}
+      {/* Render PDF Viewer */}
       {selectedPdf && (
         <div className="absolute inset-0 flex justify-center items-center z-30 bg-black/50">
-          <div className="bg-white p-4 rounded-lg w-[80%] h-[80%] overflow-hidden">
+          <div className="bg-white p-4 rounded-lg w-[80%] h-[80%] relative">
             <button
               onClick={() => setSelectedPdf(null)}
               className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full"
             >
               X
             </button>
-            <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-              <Viewer fileUrl={selectedPdf} />
-            </Worker>
-
+            <iframe 
+              src={selectedPdf} 
+              className="w-full h-full"
+              title="PDF Viewer"
+            ></iframe>
           </div>
         </div>
       )}
