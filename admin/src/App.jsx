@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import BlogEditor from './components/editor'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const userRole = "admin"; // Change to "moderator" to test different views
 
   return (
     <>
-      <BlogEditor />
+      <Navbar role={userRole} />
+      <Routes>
+        {/* Define your route components here */}
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
