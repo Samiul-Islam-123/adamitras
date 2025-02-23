@@ -246,7 +246,46 @@ DriveRouter.get("/files/:course/:semester/:subject", async (req, res) => {
 
 
 
+/**
+ * Get all PDFs from the Roadmaps folder
+ */
+DriveRouter.get("/roadmaps", async (req, res) => {
+  try {
+    // Find the Roadmaps folder in root
+    const folderResponse = await drive.files.list({
+      q: `name = 'Roadmaps' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      fields: "files(id, name)",
+    });
 
+    if (folderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Roadmaps folder not found" });
+    }
+
+    const roadmapFolderId = folderResponse.data.files[0].id;
+
+    // Get all PDF files in the Roadmaps folder
+    const filesResponse = await drive.files.list({
+      q: `'${roadmapFolderId}' in parents and mimeType = 'application/pdf'`,
+      fields: "files(id, name, webViewLink, webContentLink)",
+    });
+
+    if (filesResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "No PDFs found in Roadmaps folder" });
+    }
+
+    const roadmaps = filesResponse.data.files.map((file) => ({
+      id: file.id,
+      name: file.name,
+      viewLink: file.webViewLink,
+      downloadLink: file.webContentLink,
+    }));
+
+    res.json({ roadmaps });
+  } catch (error) {
+    console.error("Error fetching roadmaps:", error);
+    res.status(500).json({ error: "Failed to fetch roadmaps" });
+  }
+});
 
 
 
