@@ -8,6 +8,7 @@ const getIPAddress = require('./utils/IP');
 const AuthRouter = require('./routes/AuthRouter');
 const APIRouter = require('./routes/API');
 const DriveRouter = require('./routes/DriveRouter');
+const BlogRoutes = require('./routes/BlogRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5500;
@@ -29,8 +30,9 @@ app.get('/', (req,res) => {
 })
 
 app.use('/auth', AuthRouter);
-app.use('/api', APIRouter)
-app.use('/drive', DriveRouter)
+app.use('/api', APIRouter);
+app.use('/drive', DriveRouter);
+app.use('/blog', BlogRoutes)
 
 app.listen(PORT,async () => {
     logger.info("Server is starting...");

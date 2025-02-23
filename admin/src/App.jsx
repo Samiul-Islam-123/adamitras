@@ -1,15 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import BlogEditor from './components/editor'
+import React from 'react'
+import MarkdownEditor from './components/MarkdownEditor'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <BlogEditor />
+      <MarkdownEditor />
     </>
   )
 }

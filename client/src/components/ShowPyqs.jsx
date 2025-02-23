@@ -35,7 +35,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
     const match = pdfUrl.match(/\/d\/(.*?)\//);
     if (match && match[1]) {
       const fileId = match[1];
-      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; // ✅ Correct preview URL
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; 
       setSelectedPdf(embedUrl);
     } else {
       console.error("Invalid Google Drive URL");
