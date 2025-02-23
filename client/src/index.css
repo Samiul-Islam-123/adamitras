@@ -19,3 +19,24 @@
     font-style: normal;
   }
   
+  /* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px; /* Slim width */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Match background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #EFC740; /* Custom color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4a91e; /* Darker shade on hover */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

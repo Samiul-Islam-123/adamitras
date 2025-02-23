@@ -6,7 +6,7 @@ function App() {
     <>
       <MarkdownEditor />
     </>
-  )
+  );
 }
 
 export default App

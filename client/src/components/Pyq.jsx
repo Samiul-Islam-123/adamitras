@@ -27,10 +27,14 @@ const Pyq = () => {
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
+    setSelectedSemester(""); // Reset semester when course changes
+    setSelectedSubject(""); // Reset subject when course changes
+    setSubjects([]); // Clear subjects
   };
 
   const handleSemesterChange = (e) => {
     setSelectedSemester(e.target.value);
+    setSelectedSubject(""); // Reset subject when semester changes
   };
 
   const handleSubjectChange = (e) => {
@@ -40,7 +44,6 @@ const Pyq = () => {
     );
     setSelectedSubject(selectedSubject ? selectedSubject.name : "");
   };
-  
 
   const fetchSubjects = async () => {
     if (selectedCourse && selectedSemester) {
@@ -66,7 +69,7 @@ const Pyq = () => {
 
   return (
     <section className="w-screen h-screen relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 md:w-[40%] w-[85%] border-[#EFC740] border-2 shadow-md shadow-black/20 flex items-center justify-center flex-col gap-5 rounded-3xl bg-[#FFF4CE] py-20">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 md:mt-5 md:w-[40%] w-[85%] border-[#EFC740] border-2 shadow-md shadow-black/20 flex items-center justify-center flex-col gap-5 rounded-3xl bg-[#FFF4CE] py-20">
         <h1 className="text-3xl mb-5 font-bold text-[#f5c72f]">Select Your Need</h1>
 
         {/* Course Selection */}
@@ -85,47 +88,54 @@ const Pyq = () => {
           ))}
         </select>
 
-        {/* Semester Selection */}
-        <select
-          value={selectedSemester}
-          onChange={handleSemesterChange}
-          className="w-[200px] border-[#EFC740] border-2 py-2 px-4 rounded-xl"
-        >
-          <option value="" disabled>
-            Select Semester
-          </option>
-          {semesters.map((semester, index) => (
-            <option key={index} value={semester}>
-              {semester}
+        {/* Semester Selection (Only Show If Course Is Selected) */}
+        {selectedCourse && (
+          <select
+            value={selectedSemester}
+            onChange={handleSemesterChange}
+            className="w-[200px] border-[#EFC740] border-2 py-2 px-4 rounded-xl"
+          >
+            <option value="" disabled>
+              Select Semester
             </option>
-          ))}
-        </select>
-
-        {/* Subject Selection */}
-        <select
-          onChange={handleSubjectChange}
-          className="w-[200px] py-2 border-[#EFC740] border-2 px-4 rounded-xl"
-        >
-          <option value="" disabled>
-            Select Subject
-          </option>
-          {loadingSubjects ? (
-            <option>Loading subjects...</option>
-          ) : (
-            subjects.map((subject, index) => (
-              <option key={index} value={subject.id}>
-                {subject.name}
+            {semesters.map((semester, index) => (
+              <option key={index} value={semester}>
+                {semester}
               </option>
-            ))
-          )}
-        </select>
+            ))}
+          </select>
+        )}
 
-        <button
-          onClick={handleClick}
-          className="w-[200px] shadow-sm shadow-white/20 text-white bg-[#f5c72f] py-2 px-4 rounded-xl"
-        >
-          Done
-        </button>
+        {/* Subject Selection (Only Show If Semester Is Selected) */}
+        {selectedSemester && (
+          <select
+            onChange={handleSubjectChange}
+            className="w-[200px] py-2 border-[#EFC740] border-2 px-4 rounded-xl"
+          >
+            <option value="" disabled>
+              Select Subject
+            </option>
+            {loadingSubjects ? (
+              <option>Loading subjects...</option>
+            ) : (
+              subjects.map((subject, index) => (
+                <option key={index} value={subject.id}>
+                  {subject.name}
+                </option>
+              ))
+            )}
+          </select>
+        )}
+
+        {/* Done Button (Only Show If Subject Is Selected) */}
+        {selectedSubject && (
+          <button
+            onClick={handleClick}
+            className="w-[200px] shadow-sm shadow-white/20 text-white bg-[#f5c72f] py-2 px-4 rounded-xl"
+          >
+            Done
+          </button>
+        )}
       </div>
 
       {show && (

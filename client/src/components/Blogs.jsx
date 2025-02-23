@@ -33,16 +33,19 @@ const Blogs = () => {
 
     return (
         <>
-            <section className="relative w-screen h-screen flex flex-col items-center justify-center">
-                <div className="absolute top-1/2 -translate-y-3/4 left-0 w-full flex items-center justify-center flex-col">
-                    <h3 className="md:text-5xl text-3xl mt-40 font-semibold mb-16 vina-sans">Recent Blogs</h3>
+            <section className="relative w-screen h-screen flex flex-col  items-center justify-center  ">
+                <div className=" absolute top-1/2 -translate-y-3/4 left-0  w-full  flex items-center justify-center flex-col">
+                    <h3 className="md:text-5xl text-3xl mt-36 font-semibold mb-10 vina-sans ">
+                        Recent Blogs
+                    </h3>
+
                     <div className="relative w-[90%] flex items-center justify-center">
                         <div className="md:w-[90%] w-[100%] flex justify-center">
                             <Swiper
                                 modules={[EffectCoverflow, Navigation]}
                                 effect="coverflow"
                                 centeredSlides={true}
-                                slidesPerView={4}
+                                slidesPerView={3}
                                 loop={true}
                                 coverflowEffect={{
                                     rotate: 0,
@@ -55,7 +58,8 @@ const Blogs = () => {
                                     nextEl: ".next-btn",
                                     prevEl: ".prev-btn",
                                 }}
-                                className="w-[100%]"
+                                className="w-[75%]"
+                                
                             >
                                 {
                                     blogs && (<>
