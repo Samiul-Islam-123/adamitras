@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import RoutesManager from "./RoutesManager";
 
 function App() {
   const userRole = "admin"; // Change to "moderator" to test different views
@@ -7,9 +8,7 @@ function App() {
   return (
     <>
       <Navbar role={userRole} />
-      <Routes>
-        {/* Define your route components here */}
-      </Routes>
+      <RoutesManager />
     </>
   );
 }
