@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const DriveRouter = express.Router();
 
-const KEY_FILE_PATH = path.resolve(__dirname, "../google-drive-dev-keys.json"); 
+const KEY_FILE_PATH = path.resolve(__dirname, "../adamitras_keys.json"); 
 const ROOT_FOLDER_ID = "1G-aDZOii2xVjT51t7SSa9UJFLycX_J4X"; 
 
 const auth = new google.auth.GoogleAuth({
