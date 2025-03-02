@@ -49,7 +49,7 @@ const Roadmap = () => {
     <div className="z-30 relative w-screen h-screen bg-white flex flex-col px-8 py-16">
       <div className="elem absolute w-screen h-[50%] text-white top-0 left-0 z-30 bg-blue-500 flex flex-col items-center justify-center">
         <FaMapSigns size={40} />
-        <h1 className="text-center mt-2 text-4xl">Roadmaps</h1>
+        <h1 className="text-center mt-2 text-4xl ">Roadmaps</h1>
       </div>
 
       <div className="relative show opacity-0 w-full h-full mt-[20vh]">
@@ -60,7 +60,7 @@ const Roadmap = () => {
           <MdOutlineArrowBack size={25} />
         </button>
 
-        <h2 className="text-4xl md:text-8xl font-bold">Roadmaps</h2>
+        <h2 className="text-4xl md:text-8xl hurricane">Roadmaps</h2>
 
         {/* Loading and Error Handling */}
         {loading ? (
