@@ -1,0 +1,40 @@
+.editor-content {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-height: 300px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #fff;
+  }
+  
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .toolbar button {
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  
+  .toolbar button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .toolbar button:active {
+    background-color: #d6d6d6;
+  }
+  
+  .toolbar svg {
+    color: #333;
+  }
+  
