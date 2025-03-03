@@ -36,7 +36,9 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
     const match = pdfUrl.match(/\/d\/(.*?)\//);
     if (match && match[1]) {
       const fileId = match[1];
-      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; 
+      // Use the preview URL which disables downloading capability by default
+      // Remove any option to download or print
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&rm=minimal`;
       setSelectedPdf(embedUrl);
     } else {
       console.error("Invalid Google Drive URL");
@@ -73,7 +75,10 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
                     >
                       <h1 className="font-semibold md:text-lg text-sm">{pyq.name}</h1>
                       <button
-                        onClick={() => handleSeeClick(pyq.viewLink)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering parent's onClick
+                          handleSeeClick(pyq.viewLink);
+                        }}
                         className="md:px-3 md:py-1 px-10 md:text-lg text-sm bg-[#EFC740] rounded-md text-white md:block hidden"
                       >
                         See
@@ -86,11 +91,11 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
         </div>
         
         <button
-              onClick={handleclick}
-              className="absolute md:top-10 md:right-10 top-5 right-5 bg-red-500 text-white p-1 rounded-full"
-            >
-            <IoIosCloseCircle size={30} />
-            </button>
+          onClick={handleclick}
+          className="absolute md:top-10 md:right-10 top-5 right-5 bg-red-500 text-white p-1 rounded-full"
+        >
+          <IoIosCloseCircle size={30} />
+        </button>
       </div>
 
       {/* Render PDF Viewer */}
@@ -101,13 +106,23 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
               onClick={() => setSelectedPdf(null)}
               className="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full"
             >
-            <IoIosCloseCircle size={30} />
+              <IoIosCloseCircle size={30} />
             </button>
-            <iframe 
-              src={selectedPdf} 
-              className="w-full h-full"
-              title="PDF Viewer"
-            ></iframe>
+            <div className="w-full h-full relative">
+              <iframe 
+                src={selectedPdf} 
+                className="w-full h-full"
+                title="PDF Viewer"
+                frameBorder="0"
+                allowFullScreen={false}
+                sandbox="allow-scripts allow-same-origin allow-forms"
+              ></iframe>
+              {/* Invisible overlay to prevent right-click and other interactions */}
+              <div 
+                className="absolute inset-0 select-none pointer-events-none"
+                style={{backgroundColor: 'transparent'}}
+              ></div>
+            </div>
           </div>
         </div>
       )}

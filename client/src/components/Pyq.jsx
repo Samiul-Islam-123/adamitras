@@ -7,36 +7,81 @@ const Pyq = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
+  
+  // State for dynamically fetched options
+  const [courses, setCourses] = useState([]);
+  const [semesters, setSemesters] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  
+  // Loading states
+  const [loadingCourses, setLoadingCourses] = useState(false);
+  const [loadingSemesters, setLoadingSemesters] = useState(false);
   const [loadingSubjects, setLoadingSubjects] = useState(false);
 
   const handleClick = () => {
     setShow(!show);
   };
 
-  const engineeringCourses = [
-    "ComputerScience",
-    "Mechanical Engineering",
-    "Electrical Engineering",
-    "Civil Engineering",
-    "Electronics and Communication Engineering",
-    "Bachelor in Computer Application"
-  ];
+  // Fetch courses when component mounts
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoadingCourses(true);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/drive/courses`
+        );
+        setCourses(response.data.courses);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
 
-  const semesters = ["Sem1", "Sem2", "Sem3", "Sem4"];
+    fetchCourses();
+  }, []);
 
+  // Handle course selection
   const handleCourseChange = (e) => {
-    setSelectedCourse(e.target.value);
+    const courseName = e.target.value;
+    setSelectedCourse(courseName);
     setSelectedSemester(""); // Reset semester when course changes
     setSelectedSubject(""); // Reset subject when course changes
     setSubjects([]); // Clear subjects
   };
 
+  // Fetch semesters when course selection changes
+  useEffect(() => {
+    const fetchSemesters = async () => {
+      if (selectedCourse) {
+        setLoadingSemesters(true);
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/drive/semesters/${selectedCourse}`
+          );
+          setSemesters(response.data.semesters);
+        } catch (error) {
+          console.error("Error fetching semesters:", error);
+        } finally {
+          setLoadingSemesters(false);
+        }
+      }
+    };
+
+    if (selectedCourse) {
+      fetchSemesters();
+    } else {
+      setSemesters([]);
+    }
+  }, [selectedCourse]);
+
+  // Handle semester selection
   const handleSemesterChange = (e) => {
     setSelectedSemester(e.target.value);
     setSelectedSubject(""); // Reset subject when semester changes
   };
 
+  // Handle subject selection
   const handleSubjectChange = (e) => {
     const selectedSubjectId = e.target.value;
     const selectedSubject = subjects.find(
@@ -45,25 +90,28 @@ const Pyq = () => {
     setSelectedSubject(selectedSubject ? selectedSubject.name : "");
   };
 
-  const fetchSubjects = async () => {
-    if (selectedCourse && selectedSemester) {
-      setLoadingSubjects(true);
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/drive/subjects/${selectedCourse}/${selectedSemester}`
-        );
-        setSubjects(response.data.subjects);
-      } catch (error) {
-        console.error("Error fetching subjects:", error);
-      } finally {
-        setLoadingSubjects(false);
-      }
-    }
-  };
-
+  // Fetch subjects when course and semester selections change
   useEffect(() => {
+    const fetchSubjects = async () => {
+      if (selectedCourse && selectedSemester) {
+        setLoadingSubjects(true);
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/drive/subjects/${selectedCourse}/${selectedSemester}`
+          );
+          setSubjects(response.data.subjects);
+        } catch (error) {
+          console.error("Error fetching subjects:", error);
+        } finally {
+          setLoadingSubjects(false);
+        }
+      }
+    };
+
     if (selectedCourse && selectedSemester) {
       fetchSubjects();
+    } else {
+      setSubjects([]);
     }
   }, [selectedCourse, selectedSemester]);
 
@@ -77,13 +125,14 @@ const Pyq = () => {
           value={selectedCourse}
           onChange={handleCourseChange}
           className="w-[200px] border-[#EFC740] border-2 py-2 px-4 rounded-xl"
+          disabled={loadingCourses}
         >
           <option value="" disabled>
-            Select Course
+            {loadingCourses ? "Loading courses..." : "Select Course"}
           </option>
-          {engineeringCourses.map((course, index) => (
-            <option key={index} value={course}>
-              {course}
+          {courses.map((course) => (
+            <option key={course.id} value={course.name}>
+              {course.name}
             </option>
           ))}
         </select>
@@ -94,13 +143,14 @@ const Pyq = () => {
             value={selectedSemester}
             onChange={handleSemesterChange}
             className="w-[200px] border-[#EFC740] border-2 py-2 px-4 rounded-xl"
+            disabled={loadingSemesters}
           >
             <option value="" disabled>
-              Select Semester
+              {loadingSemesters ? "Loading semesters..." : "Select Semester"}
             </option>
-            {semesters.map((semester, index) => (
-              <option key={index} value={semester}>
-                {semester}
+            {semesters.map((semester) => (
+              <option key={semester.id} value={semester.name}>
+                {semester.name}
               </option>
             ))}
           </select>
@@ -109,21 +159,19 @@ const Pyq = () => {
         {/* Subject Selection (Only Show If Semester Is Selected) */}
         {selectedSemester && (
           <select
+            value={selectedSubject ? subjects.find(s => s.name === selectedSubject)?.id || "" : ""}
             onChange={handleSubjectChange}
             className="w-[200px] py-2 border-[#EFC740] border-2 px-4 rounded-xl"
+            disabled={loadingSubjects}
           >
             <option value="" disabled>
-              Select Subject
+              {loadingSubjects ? "Loading subjects..." : "Select Subject"}
             </option>
-            {loadingSubjects ? (
-              <option>Loading subjects...</option>
-            ) : (
-              subjects.map((subject, index) => (
-                <option key={index} value={subject.id}>
-                  {subject.name}
-                </option>
-              ))
-            )}
+            {subjects.map((subject) => (
+              <option key={subject.id} value={subject.id}>
+                {subject.name}
+              </option>
+            ))}
           </select>
         )}
 
