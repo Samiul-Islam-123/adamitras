@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubject }) => {
   const [pyqs, setPyqs] = useState([]);
@@ -35,7 +36,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
     const match = pdfUrl.match(/\/d\/(.*?)\//);
     if (match && match[1]) {
       const fileId = match[1];
-      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; // ✅ Correct preview URL
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`; 
       setSelectedPdf(embedUrl);
     } else {
       console.error("Invalid Google Drive URL");
@@ -43,9 +44,9 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
   };
 
   return (
-    <div className="absolute top-0 left-0 z-20 w-screen h-screen bg-black/15 flex pt-32 justify-center">
-      <div className="flex w-full h-[70%] justify-center">
-        <div className="md:w-[60%] w-[80%] bg-[#FFF4CE] border-4 border-[#EFC740] rounded-3xl">
+    <div className="fixed top-0 left-0 z-20 w-screen h-screen bg-black/15 flex xl:pt-20 md:items-start justify-center items-center ">
+      <div className="flex w-full h-[80%] justify-center">
+        <div className="md:w-[60%] w-[80%] h-[100%] bg-[#FFF4CE] border-4 border-[#EFC740] rounded-3xl  overflow-y-auto hide-scrollbar">
           <div className="flex gap-3 md:p-20 py-6 px-2">
             <input
               type="text"
@@ -58,7 +59,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
           </div>
           <div className="w-full flex-1">
             {loading ? (
-              <p>Loading PYQs...</p>
+              <p className="md:mx-16 mx-3 py-3">Loading PYQs...</p>
             ) : error ? (
               <p style={{ color: "red" }}>{error}</p>
             ) : (
@@ -68,6 +69,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
                     <li
                       key={index}
                       className="md:mx-16 mx-3 py-3 cursor-pointer flex justify-between border-b border-black/30 text-lg"
+                      onClick={() => handleSeeClick(pyq.viewLink)}
                     >
                       <h1 className="font-semibold md:text-lg text-sm">{pyq.name}</h1>
                       <button
@@ -82,20 +84,24 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
             )}
           </div>
         </div>
-        <button onClick={handleclick} className="h-fit w-fit p-3">
-          X
-        </button>
+        
+        <button
+              onClick={handleclick}
+              className="absolute md:top-10 md:right-10 top-5 right-5 bg-red-500 text-white p-1 rounded-full"
+            >
+            <IoIosCloseCircle size={30} />
+            </button>
       </div>
 
       {/* Render PDF Viewer */}
       {selectedPdf && (
         <div className="absolute inset-0 flex justify-center items-center z-30 bg-black/50">
-          <div className="bg-white p-4 rounded-lg w-[80%] h-[80%] relative">
+          <div className="bg-white p-4 rounded-lg w-[90%] h-[90%] relative">
             <button
               onClick={() => setSelectedPdf(null)}
-              className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full"
+              className="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full"
             >
-              X
+            <IoIosCloseCircle size={30} />
             </button>
             <iframe 
               src={selectedPdf} 

@@ -1,20 +1,24 @@
 const express = require("express");
 const { google } = require("googleapis");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
-const path = require('path');
-const authenticateToken = require("../middleware/auth");
 
 const DriveRouter = express.Router();
 
-const KEY_FILE_PATH = path.resolve(__dirname, "../google-drive-dev-keys.json"); // Resolves to absolute path
-const ROOT_FOLDER_ID = "1G-aDZOii2xVjT51t7SSa9UJFLycX_J4X"; // Root folder ID containing all semester folders
-// Authenticate Google Drive API
+const KEY_FILE_PATH = path.resolve(__dirname, "../adamitras_keys.json"); 
+const ROOT_FOLDER_ID = "1G-aDZOii2xVjT51t7SSa9UJFLycX_J4X"; 
+
 const auth = new google.auth.GoogleAuth({
     keyFile: KEY_FILE_PATH,
     scopes: ["https://www.googleapis.com/auth/drive"],
 });
 
 const drive = google.drive({ version: "v3", auth });
+
+// Configure multer for file uploads
+const upload = multer({ dest: "uploads/" });
 
 /**
  * Fetch files from Google Drive
@@ -45,7 +49,80 @@ DriveRouter.get("/files", async (req, res) => {
 
 
 
+/**
+ * Upload an image to Google Drive inside "blog_post_images" folder
+ */
+DriveRouter.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+      if (!req.file) {
+          return res.status(400).json({ error: "No file uploaded" });
+      }
 
+      const { originalname, mimetype, path: tempFilePath } = req.file;
+
+      // Check if "blog_post_images" folder exists in root
+      const folderResponse = await drive.files.list({
+          q: `name = 'blog_post_images' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+          fields: "files(id)",
+      });
+
+      let folderId;
+      if (folderResponse.data.files.length > 0) {
+          folderId = folderResponse.data.files[0].id;
+      } else {
+          // Create folder if it doesn't exist
+          const folderMetadata = {
+              name: "blog_post_images",
+              mimeType: "application/vnd.google-apps.folder",
+              parents: [ROOT_FOLDER_ID],
+          };
+          const folder = await drive.files.create({
+              resource: folderMetadata,
+              fields: "id",
+          });
+          folderId = folder.data.id;
+      }
+
+      // Upload image to Google Drive
+      const fileMetadata = {
+          name: originalname,
+          parents: [folderId],
+      };
+
+      const media = {
+          mimeType: mimetype,
+          body: fs.createReadStream(tempFilePath),
+      };
+
+      const file = await drive.files.create({
+          resource: fileMetadata,
+          media: media,
+          fields: "id, webViewLink",
+      });
+
+      // Make the file public
+      await drive.permissions.create({
+          fileId: file.data.id,
+          requestBody: {
+              role: "reader",
+              type: "anyone",
+          },
+      });
+
+      // Delete temp file
+      fs.unlinkSync(tempFilePath);
+
+      res.json({
+          success: true,
+          message: "File uploaded successfully",
+          imageUrl: `https://drive.google.com/uc?id=${file.data.id}`,
+          viewLink: file.data.webViewLink,
+      });
+  } catch (error) {
+      console.error("Error uploading file:", error);
+      res.status(500).json({ error: "Failed to upload file" });
+  }
+});
 
 
 
@@ -169,7 +246,46 @@ DriveRouter.get("/files/:course/:semester/:subject", async (req, res) => {
 
 
 
+/**
+ * Get all PDFs from the Roadmaps folder
+ */
+DriveRouter.get("/roadmaps", async (req, res) => {
+  try {
+    // Find the Roadmaps folder in root
+    const folderResponse = await drive.files.list({
+      q: `name = 'Roadmaps' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      fields: "files(id, name)",
+    });
 
+    if (folderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Roadmaps folder not found" });
+    }
+
+    const roadmapFolderId = folderResponse.data.files[0].id;
+
+    // Get all PDF files in the Roadmaps folder
+    const filesResponse = await drive.files.list({
+      q: `'${roadmapFolderId}' in parents and mimeType = 'application/pdf'`,
+      fields: "files(id, name, webViewLink, webContentLink)",
+    });
+
+    if (filesResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "No PDFs found in Roadmaps folder" });
+    }
+
+    const roadmaps = filesResponse.data.files.map((file) => ({
+      id: file.id,
+      name: file.name,
+      viewLink: file.webViewLink,
+      downloadLink: file.webContentLink,
+    }));
+
+    res.json({ roadmaps });
+  } catch (error) {
+    console.error("Error fetching roadmaps:", error);
+    res.status(500).json({ error: "Failed to fetch roadmaps" });
+  }
+});
 
 
 

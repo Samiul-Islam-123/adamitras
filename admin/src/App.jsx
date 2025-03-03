@@ -3,14 +3,14 @@ import Navbar from "./components/Navbar";
 import RoutesManager from "./RoutesManager";
 
 function App() {
-  const userRole = "admin"; // Change to "moderator" to test different views
+  const [count, setCount] = useState(0)
 
   return (
     <>
       <Navbar role={userRole} />
       <RoutesManager />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
