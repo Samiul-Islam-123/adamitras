@@ -8,7 +8,7 @@ require("dotenv").config();
 const DriveRouter = express.Router();
 
 const KEY_FILE_PATH = path.resolve(__dirname, "../adamitras_keys.json"); 
-const ROOT_FOLDER_ID = "1G-aDZOii2xVjT51t7SSa9UJFLycX_J4X"; 
+const ROOT_FOLDER_ID = "1bawDfaJPRyBavN0T4IPJXL_FgNTc5XsO"; 
 
 const auth = new google.auth.GoogleAuth({
     keyFile: KEY_FILE_PATH,
@@ -243,6 +243,73 @@ DriveRouter.get("/files/:course/:semester/:subject", async (req, res) => {
 });
 
 
+
+
+
+// Route to get all available courses (top-level folders in ROOT_FOLDER)
+DriveRouter.get("/courses", async (req, res) => {
+  try {
+    // Fetch all folder-type files directly under the ROOT_FOLDER_ID
+    const courseFoldersResponse = await drive.files.list({
+      q: `mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (courseFoldersResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "No course folders found" });
+    }
+
+    // Extract just the names and IDs of these folders
+    const courses = courseFoldersResponse.data.files.map(folder => ({
+      id: folder.id,
+      name: folder.name
+    }));
+
+    res.json({ courses });
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    res.status(500).json({ error: "Failed to fetch courses" });
+  }
+});
+
+// Route to get all semesters available for a specific course
+DriveRouter.get("/semesters/:course", async (req, res) => {
+  const { course } = req.params;
+  try {
+    // First, get the course folder ID
+    const courseFolderResponse = await drive.files.list({
+      q: `name = '${course}' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (courseFolderResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "Course folder not found" });
+    }
+
+    const courseFolderId = courseFolderResponse.data.files[0].id;
+
+    // Then fetch all semester folders within this course folder
+    const semesterFoldersResponse = await drive.files.list({
+      q: `mimeType = 'application/vnd.google-apps.folder' and '${courseFolderId}' in parents`,
+      fields: "files(id, name)",
+    });
+
+    if (semesterFoldersResponse.data.files.length === 0) {
+      return res.status(404).json({ error: "No semester folders found for this course" });
+    }
+
+    // Extract just the names and IDs of these folders
+    const semesters = semesterFoldersResponse.data.files.map(folder => ({
+      id: folder.id,
+      name: folder.name
+    }));
+
+    res.json({ semesters });
+  } catch (error) {
+    console.error("Error fetching semesters:", error);
+    res.status(500).json({ error: "Failed to fetch semesters" });
+  }
+});
 
 
 
