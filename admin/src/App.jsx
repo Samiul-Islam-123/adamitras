@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+i
 import RoutesManager from "./RoutesManager";
 
 function App() {
@@ -7,7 +6,7 @@ function App() {
 
   return (
     <>
-      <Navbar role={userRole} />
+      
       <RoutesManager />
     </>
   )
