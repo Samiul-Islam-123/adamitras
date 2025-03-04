@@ -4,7 +4,7 @@ import TextEditor from './TextEditor'
 const Blogs = () => {
   return (
     <div>
-        <TextEditor />
+        
     </div>
   )
 }

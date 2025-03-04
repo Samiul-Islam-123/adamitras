@@ -1,6 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router";
 import { useState } from "react";
 import Blogs from "./Components/Blogs";
+import Sidebar from "./Components/Sidebar";
+import Navbar from "./Components/Navbar";
+import CreateBlogs from "./Components/CreateBlogs";
+import Internships from "./Components/Internships";
+import Events from "./Components/Events";
+
 
 const App = () => {
   return (

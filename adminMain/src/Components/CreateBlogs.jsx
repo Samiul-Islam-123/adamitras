@@ -1,8 +1,9 @@
 import React from 'react'
+import TextEditor from './TextEditor'
 
 const CreateBlogs = () => {
   return (
-    <div>CreateBlogs</div>
+    <div><TextEditor /></div>
   )
 }
 
