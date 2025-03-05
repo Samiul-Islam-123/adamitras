@@ -40,17 +40,17 @@ const App = () => {
             duration: 1.5,
             ease: "expo.inOut",
         })
-        .to(".yellow-txt", {
-            y: 0,
-            duration: 0.5,
-            ease: "power1.inOut",
-        })
-        .to(".yellow-txt", {
-            y: 100,
-            delay: 0.8,
-            duration: 0.5,
-            ease: "expo.inOut",
-        })
+        // .to(".yellow-txt", {
+        //     y: 0,
+        //     duration: 0.5,
+        //     ease: "power1.inOut",
+        // })
+        // .to(".yellow-txt", {
+        //     y: 100,
+        //     delay: 0.8,
+        //     duration: 0.5,
+        //     ease: "expo.inOut",
+        // })
         .to(".elem", {
             height: "0%",
             delay: -0.5,

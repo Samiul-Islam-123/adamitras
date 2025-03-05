@@ -47,26 +47,26 @@ const Roadmap = () => {
 
   return (
     <div className="z-30 relative w-screen h-screen bg-white flex flex-col px-8 py-16">
-      <div className="elem absolute w-screen h-[50%] text-white top-0 left-0 z-30 bg-blue-500 flex flex-col items-center justify-center">
+      <div className="elem absolute w-screen h-[0%] text-white top-0 left-0 z-30 bg-blue-500 flex flex-col items-center justify-center">
         <FaMapSigns size={40} />
         <h1 className="text-center mt-2 text-4xl ">Roadmaps</h1>
       </div>
 
-      <div className="relative show opacity-0 w-full h-full mt-[20vh]">
+      <div className=" show opacity-0 w-full h-full ">
         <button
-          className="absolute left-5 top-5 p-2 rounded-full border border-black"
+          className=" mb-5 p-2 rounded-full border border-black"
           onClick={() => navigate("/career")}
         >
           <MdOutlineArrowBack size={25} />
         </button>
 
-        <h2 className="text-4xl md:text-8xl hurricane">Roadmaps</h2>
+        <h2 className="text-5xl md:text-8xl hurricane">Roadmaps</h2>
 
         {/* Loading and Error Handling */}
         {loading ? (
           <p className="text-center mt-5">Loading roadmaps...</p>
         ) : error ? (
-          <p className="text-center text-red-500 mt-5">{error}</p>
+          <p className=" text-3xl mt-10 text-black/40">No Roadmaps Yet.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             {roadmaps.map((roadmap) => (
