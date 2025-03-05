@@ -2,9 +2,11 @@ const express = require("express");
 const BlogRoutes = express.Router();
 const BlogModel = require("../models/BlogModel");
 const CommentModel = require("../models/CommentModel");
+const cloudinary = require('../config/cloudinaryConfig');
+const upload = require('../config/multerConfig')
 
 // Create a new blog post
-BlogRoutes.post("/post-blog", async (req, res) => {
+BlogRoutes.post("/post-blog", upload.single('thumbnail'), async (req, res) => {
   try {
     const { title, content, author, tags, imageURL } = req.body;
 
@@ -17,7 +19,39 @@ BlogRoutes.post("/post-blog", async (req, res) => {
       });
     }
 
-    const newBlog = new BlogModel({ title, content, author, tags, imageURL });
+    // Check if file exists
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No thumbnail uploaded'
+      });
+    }
+
+    // Upload image to Cloudinary
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'blogs', // Optional: organize images in a folder
+          allowed_formats: ['jpg', 'png', 'jpeg', 'gif'],
+          // Optional transformations
+          transformation: [
+            { width: 800, crop: "limit" }, // Limit image width
+            { quality: "auto" } // Auto-optimize quality
+          ]
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+
+      // Convert buffer to stream
+      uploadStream.end(req.file.buffer);
+    });
+
+    const newBlog = new BlogModel({ title, content, author, tags, 
+      imageURL : uploadResult.secure_url
+     });
     await newBlog.save();
     res.json({ success: true, message: "Blog posted successfully", data: newBlog });
   } catch (error) {
@@ -61,12 +95,12 @@ BlogRoutes.get("/blogs", async (req, res) => {
 BlogRoutes.put("/update-blog/:ID", async (req, res) => {
   try {
     const { ID } = req.params;
-    const { title, content, tags ,author} = req.body;
+    const { title, content, tags, author } = req.body;
 
     if (!ID) {
       return res.status(400).json({ success: false, message: "Blog ID is required.", data: null });
     }
-    
+
     if (!title && !content && !tags) {
       return res.status(400).json({
         success: false,

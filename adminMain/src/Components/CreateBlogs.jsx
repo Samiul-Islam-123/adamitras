@@ -17,11 +17,7 @@ const CreateBlogs = () => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
     }
   };
 
@@ -47,22 +43,35 @@ const CreateBlogs = () => {
       return;
     }
 
+    if (!image) {
+      setError('Please upload a thumbnail');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
-      // Prepare blog data
-      const blogData = {
-        title,
-        content,
-        author: localStorage.getItem('userId'), // Assuming you store user ID in localStorage
-        tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag), // Convert tags to array
-        imageURL: image // Base64 image URL
-      };
+      // Create FormData to send multipart/form-data
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('author', import.meta.env.VITE_ADMIN_ID);
+      //alert(import.meta.env.VITE_ADMIN_ID);
+      // Add tags
+      const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+      formData.append('tags', JSON.stringify(tagsArray));
+      
+      // Append thumbnail
+      formData.append('thumbnail', image);
 
-      // Send POST request
-      const response = await axios.post(API_URL+'/post-blog', blogData);
-      console.log(response)
+      // Send POST request with proper content type
+      const response = await axios.post(API_URL + '/post-blog', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
       // Reset form
       setTitle('');
       setTags('');
@@ -134,7 +143,7 @@ const CreateBlogs = () => {
             {image ? (
               <div className="relative w-full h-full">
                 <img 
-                  src={image} 
+                  src={URL.createObjectURL(image)} 
                   alt="Uploaded Thumbnail" 
                   className="w-full h-full object-cover rounded-lg"
                 />
