@@ -78,18 +78,23 @@ BlogRoutes.get("/blogs/:ID", async (req, res) => {
   }
 });
 
-// Get all blog posts
+// Get all blog posts (most recent first)
 BlogRoutes.get("/blogs", async (req, res) => {
   try {
-    const blogs = await BlogModel.find().populate("author");
+    const blogs = await BlogModel.find()
+      .populate("author")
+      .sort({ createdAt: -1 }); // Sort by createdAt in descending order
+
     if (blogs.length === 0) {
       return res.status(404).json({ success: false, message: "No blogs found", data: [] });
     }
+
     res.json({ success: true, message: "Blogs retrieved successfully", data: blogs });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message, data: null });
   }
 });
+
 
 // Update a blog post
 BlogRoutes.put("/update-blog/:ID", async (req, res) => {
