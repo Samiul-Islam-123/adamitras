@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar";
 import CreateBlogs from "./Components/CreateBlogs";
 import Internships from "./Components/Internships";
 import Events from "./Components/Events";
+import BlogDetails from "./Components/BlogDetails";
 
 
 const App = () => {
@@ -18,6 +19,8 @@ const App = () => {
           <main className="p-6">
             <Routes>
               <Route path="/blogs" element={<Blogs />} />
+              <Route path="/blog/:id" element={<BlogDetails/>} />
+              
               <Route path="/createblogs" element={<CreateBlogs />} />
               <Route path="/internships" element={<Internships />} />
               <Route path="/events" element={<Events />} />
