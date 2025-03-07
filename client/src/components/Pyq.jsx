@@ -59,7 +59,16 @@ const Pyq = () => {
           const response = await axios.get(
             `${import.meta.env.VITE_API_URL}/drive/semesters/${selectedCourse}`
           );
-          setSemesters(response.data.semesters);
+          
+          // Sort semesters in ascending numerical order
+          const sortedSemesters = [...response.data.semesters].sort((a, b) => {
+            // Extract numeric values from semester names
+            const numA = parseInt(a.name.match(/\d+/)?.[0] || '0');
+            const numB = parseInt(b.name.match(/\d+/)?.[0] || '0');
+            return numA - numB;
+          });
+          
+          setSemesters(sortedSemesters);
         } catch (error) {
           console.error("Error fetching semesters:", error);
         } finally {

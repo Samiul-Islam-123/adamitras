@@ -5,6 +5,7 @@ import { MdOutlineArrowBack } from "react-icons/md";
 import { Eye, Loader2 } from 'lucide-react';
 import { FaBriefcase } from 'react-icons/fa';
 import gsap from "gsap";
+import { useNavigate } from 'react-router-dom';
 
 
 const API_URL = `${import.meta.env.VITE_API_URL}/internship`; // Adjust to your backend URL
@@ -14,6 +15,7 @@ const InternshipOpportunities = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch posts on component mount
   useEffect(() => {
@@ -26,6 +28,7 @@ const InternshipOpportunities = () => {
 
   // Fetch all posts
   const fetchPosts = async () => {
+    
     setIsLoading(true);
     setError(null);
     try {

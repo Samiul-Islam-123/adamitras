@@ -11,6 +11,7 @@ import Signup from './Signup';
 import axios from "axios";
 import Cookies from "js-cookie"
 import Others from './Others';
+import About from './About';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -75,7 +76,7 @@ const Hero = () => {
                 <Route path="/" element={<Home />} />
 
                 <Route path="/home" element={<Home />} />
-                <Route path="/others" element={<Others />} />
+                <Route path="/about" element={<About />} />
 
                 <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />

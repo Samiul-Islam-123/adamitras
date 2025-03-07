@@ -13,7 +13,7 @@ const Home = () => {
                 
                 <h1 className=" md:text-[8.5vw] text-[20vw] mb-2 vina-sans bg-[url('/assets/txtbg.png')] bg-cover bg-center opacity-95  bg-clip-text text-transparent ">Adamitras</h1>
             </span>
-            <p className=" md:text-[2.2vw] text-[6vw] mb-10 hurricane">Your Digital Senior</p>
+            <p className=" md:text-[2.2vw] text-[6vw] mb-10 hurricane">Your Dearest Digital Senior</p>
         </section>
     );
 };
