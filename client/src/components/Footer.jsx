@@ -56,7 +56,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="pyqs" className="text-gray-800 hover:text-white transition-colors">
-                  Pyqs
+                  PYQs
                 </a>
               </li>
               <li>
@@ -73,19 +73,19 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a  className="text-gray-800 hover:text-white transition-colors">
-                  www.adamitras.in
+                  Adamas Knowledge City <br /> Barasat, West Bengal <br /> 700126
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a className="text-gray-800 hover:text-white transition-colors">
                   5858585800
                 </a>
               </li>
               <li>
                 <a className="text-gray-800 hover:text-white transition-colors">
-                  Adamas University <br /> Barasat, West Bengal
+                  
                 </a>
-              </li>
+              </li> */}
               
             </ul>
           </div>

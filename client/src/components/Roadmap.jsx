@@ -50,17 +50,21 @@ const Roadmap = () => {
       <div className="elem absolute w-screen h-[0%] text-white top-0 left-0 z-30 bg-blue-500 flex flex-col items-center justify-center">
         <FaMapSigns size={40} />
         <h1 className="text-center mt-2 text-4xl ">Roadmaps</h1>
+
       </div>
 
       <div className=" show opacity-0 w-full h-full ">
-        <button
-          className=" mb-5 p-2 rounded-full border border-black"
-          onClick={() => navigate("/career")}
-        >
-          <MdOutlineArrowBack size={25} />
-        </button>
+        <div className="  w-full">
+          <button
+            className=" mb-5 p-2 rounded-full border border-black"
+            onClick={() => navigate("/career")}
+          >
+            <MdOutlineArrowBack size={25} />
+          </button>
 
-        <h2 className="text-5xl md:text-8xl hurricane">Roadmaps</h2>
+          {/* <h2 className="text-5xl md:text-8xl hurricane">Roadmaps</h2> */}
+          <h1 className=" md:text-4xl font-medium text-3xl text-center ">Roadmaps</h1>
+        </div>
 
         {/* Loading and Error Handling */}
         {loading ? (
