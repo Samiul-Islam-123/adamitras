@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import BlogDetails from './BlogDetails';
+import {useNavigate} from "react-router-dom"
 
 const BlogCards = ({ blog }) => {
     const [imageError, setImageError] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
+    const navigate = useNavigate();
     const show = () => {
-        alert("zfkjgkydfgjksdf")
-        setShowDetail(!showDetail)
+        console.log(blog)
+        navigate(blog._id)
     }
 
     // Convert Google Drive URL to a direct image link
@@ -21,9 +23,9 @@ const BlogCards = ({ blog }) => {
     return (
         <>
         {
-            showDetail === true && (<>
-                <BlogDetails data={blog} />
-            </>)
+            // showDetail === true && (<>
+            //     <BlogDetails data={blog} />
+            // </>)
         }
         <div onClick={()=>show()} className='flex flex-col md:w-[20vw] md:h-[25vw] w-[40vw] h-[55vw] p-1 bg-[#FFF4CE] border border-[#EFC740] rounded-lg shadow-md mx-2 my-3'>
             <div className='bg-white w-full h-1/2 rounded-md overflow-hidden'>

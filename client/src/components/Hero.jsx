@@ -12,6 +12,7 @@ import axios from "axios";
 import Cookies from "js-cookie"
 import Others from './Others';
 import About from './About';
+import BlogDetails from './BlogDetails';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -79,6 +80,8 @@ const Hero = () => {
                 <Route path="/about" element={<About />} />
 
                 <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
+                <Route path="/blogs/:id" element={<ProtectedRoute><BlogDetails /></ProtectedRoute>} />
+                
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />
                 <Route path="/career" element={<ProtectedRoute><Career /></ProtectedRoute>} />
                 {/* <Route path="career/*" element={<ProtectedRoute><CareerRoutes /></ProtectedRoute>} /> */}

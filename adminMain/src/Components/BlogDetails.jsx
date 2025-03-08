@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import TextEditor from './TextEditor';
 import { ArrowLeft, Clock, Heart, MessageSquare, Tag, Loader2 } from 'lucide-react';
 
 const BlogDetails = () => {
@@ -92,7 +93,7 @@ const BlogDetails = () => {
   }
 
   return (
-    <div className="  max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-4">
       <button 
         onClick={handleBackClick}
         className="flex items-center text-blue-500 hover:underline mb-6"
