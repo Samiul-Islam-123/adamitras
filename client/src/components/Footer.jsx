@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 import logo from "/assets/logo.png";
 
 export default function Footer() {
@@ -27,14 +28,12 @@ export default function Footer() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
               <div className="flex space-x-4">
-                <a href="#" className=" text-gray-800">
-                  <FaGithub size={25} />
-                </a>
-                <a href="#" className=" text-gray-800">
-                  <FaInstagram size={25} />
-                </a>
-                <a href="#" className=" text-gray-800">
+                
+                <a href="https://www.linkedin.com/company/adamitras/" target="_blank" className=" text-gray-800">
                   <FaLinkedin size={25} />
+                </a>
+                <a href="#" target="_blank" className=" text-gray-800">
+                  <HiOutlineMail size={25} />
                 </a>
               </div>
             </div>
@@ -44,25 +43,22 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="/home" className="text-gray-800 hover:text-white transition-colors">
-                  Home
-                </a>
+              <li  className="text-gray-800 hover:text-white transition-colors">
+                                 Home
+                
               </li>
-              <li>
-                <a href="/blogs" className="text-gray-800 hover:text-white transition-colors">
-                  Blogs
-                </a>
+              <li className="text-gray-800 hover:text-white transition-colors">
+                                  Blogs
+                
               </li>
-              <li>
-                <a href="pyqs" className="text-gray-800 hover:text-white transition-colors">
-                  PYQs
-                </a>
+              <li className="text-gray-800 hover:text-white transition-colors">
+                                PYQs
+                
               </li>
-              <li>
-                <a href="/career" className="text-gray-800 hover:text-white transition-colors">
+              <li className="text-gray-800 hover:text-white transition-colors">
+                
                   Career
-                </a>
+                
               </li>
             </ul>
           </div>
@@ -71,10 +67,13 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
             <ul className="space-y-2">
-              <li>
-                <a  className="text-gray-800 hover:text-white transition-colors">
+              <li className="text-gray-800 hover:text-white transition-colors">
+                
                   Adamas Knowledge City <br /> Barasat, West Bengal <br /> 700126
-                </a>
+                
+              </li>
+              <li className="text-gray-800 hover:text-white transition-colors">
+                  adamitras@gmail.com
               </li>
               {/* <li>
                 <a className="text-gray-800 hover:text-white transition-colors">
