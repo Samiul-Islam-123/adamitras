@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Clock, Loader2 } from 'lucide-react';
+import { Clock, Loader2, Trash2 } from 'lucide-react';
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
   const navigate = useNavigate();
 
   const fetchBlogs = async() => {
@@ -31,6 +33,34 @@ const Blogs = () => {
     navigate(`/blog/${blogId}`);
   };
 
+  // Function to delete a blog
+  const handleDeleteBlog = async (event, blogId) => {
+    // Prevent the click from bubbling up to the parent (which would navigate to the blog)
+    event.stopPropagation();
+    
+    // Ask for confirmation before deleting
+    if (!window.confirm('Are you sure you want to delete this blog post?')) {
+      return;
+    }
+    
+    setIsDeleting(true);
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/blog/delete-blog/${blogId}`);
+      setDeleteMessage({ type: 'success', text: 'Blog deleted successfully!' });
+      // Update the blogs list by removing the deleted blog
+      setBlogs(blogs.filter(blog => blog._id !== blogId));
+    } catch (err) {
+      console.error('Error deleting blog:', err);
+      setDeleteMessage({ type: 'error', text: 'Failed to delete blog. Please try again.' });
+    } finally {
+      setIsDeleting(false);
+      // Clear the message after 3 seconds
+      setTimeout(() => {
+        setDeleteMessage(null);
+      }, 3000);
+    }
+  };
+
   // Function to strip HTML tags for excerpt
   const stripHtml = (html) => {
     const tmp = document.createElement('DIV');
@@ -52,6 +82,16 @@ const Blogs = () => {
           <span>{error}</span>
         </div>
       )}
+
+      {deleteMessage && (
+        <div 
+          className={`${deleteMessage.type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700'} 
+                     px-4 py-3 border rounded mb-6`} 
+          role="alert"
+        >
+          <span>{deleteMessage.text}</span>
+        </div>
+      )}
       
       {isLoading ? (
         <div className="flex justify-center items-center py-20">
@@ -66,9 +106,19 @@ const Blogs = () => {
           {blogs.map((blog) => (
             <div 
               key={blog._id}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition cursor-pointer"
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition cursor-pointer relative"
               onClick={() => handleBlogClick(blog._id)}
             >
+              {/* Delete button */}
+              <button 
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 z-10"
+                onClick={(e) => handleDeleteBlog(e, blog._id)}
+                disabled={isDeleting}
+                title="Delete blog"
+              >
+                <Trash2 size={16} />
+              </button>
+
               {blog.imageURL && (
                 <div className="h-48 overflow-hidden">
                   <img 
