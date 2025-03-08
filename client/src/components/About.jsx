@@ -8,7 +8,64 @@ const About = () => {
     {
       logo: '/assets/logo.png',
       name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
     },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+      designation: "27' Batch BTech CSE",
+    },
+    
   ]
   const founders = [
     {
@@ -22,7 +79,7 @@ const About = () => {
       },
     },
     {
-      name: "Saptadeep Das",
+      name: "Saptadeep Chaudhury",
       designation: "25' Batch BTech ECE",
       image: "/assets/founder2.jpg",
       socialLinks: {
@@ -77,10 +134,10 @@ const About = () => {
   ];
   return (
     <>
-      <section className=" w-screen min-h-screen md:px-[10vw] px-[6vw] py-[8vw] flex   flex-col  overflow-hidden">
+      <section className=" w-screen min-h-screen md:px-[10vw] px-[6vw] md:py-[8vw] py-[50vw] flex   flex-col  overflow-hidden">
 
         {/* <h1 className=" md:text-8xl text-5xl hurricane bg-[url('/assets/bg.png')] bg-no-repeat  bg-cover w-fit">About us</h1> */}
-        <h1 className=" md:text-3xl font-medium text-2xl text-center">About Us</h1>
+        <h1 className=" md:text-3xl font-medium text-2xl mb-10 text-center">About Us</h1>
         <p className=" text-center md:text-lg text-xs  px-1 md:mt-12 mt-5 font-light italic">“We make a living by what we get, but we make a life by what we give.”<br /><i className=" font-extralight"> - Winston Churchill</i></p>
         <p className=" text-center md:text-lg text-xs  px-1 md:mt-5 mt-2 ">
           At Adamitras, we are dedicated to empowering STEM students with the resources they need to excel academically and professionally. Our platform provides curated insights into industry trends, career roadmaps, and essential skill sets to help students make informed career choices. We also offer a comprehensive database of previous year question papers and sample papers, ensuring academic preparedness. Additionally, we keep students updated on global internship opportunities, bridging the gap between education and industry.
@@ -93,23 +150,24 @@ const About = () => {
 
       </section>
 
-      <section className="w-full min-h-[80vh] flex flex-col items-center px-6 py-12">
-        <h1 className="md:text-2xl font-medium text-xl text-center">
+      <section className="w-full min-h-[40vh] flex flex-col items-center px-6 py-12">
+        <h1 className="md:text-2xl font-medium text-xl mb-10 text-center">
           Team
         </h1>
 
         <Marquee gradient={true} gradientWidth={500} speed={30}>
-          {team.map((logo, name, index) => (
-            <div className=" flex flex-col gap-3">
-              <img key={index} src={logo} className="h-16" />
-              <h1 className=" text-md">{name}</h1>
+          {team.map((e) => (
+            <div className=" flex flex-col items-center gap-2 mx-10">
+              <img key={e.index} src={e.logo} className="h-16" />
+              <h1 className=" text-md">{e.name}</h1>
+              <p className=" text-xs">{e.designation}</p>
             </div>
           ))}
         </Marquee>
 
       </section>
       {/* Co-Founders Section */}
-      <section className="w-full min-h-[80vh] flex flex-col items-center px-6 py-12">
+      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12">
         <h1 className="md:text-3xl font-medium text-2xl text-center">
           Founders
         </h1>
@@ -139,7 +197,7 @@ const About = () => {
       </section>
 
       {/* Tech Team Section */}
-      <section className="w-full min-h-screen flex flex-col items-center px-6 py-12">
+      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12">
         <h1 className="md:text-3xl font-medium text-2xl text-center">
           Tech Team
         </h1>

@@ -60,7 +60,9 @@ const Roadmap = () => {
           <MdOutlineArrowBack size={25} />
         </button>
 
-        <h2 className="text-5xl md:text-8xl hurricane">Events</h2>
+        {/* <h2 className="text-5xl md:text-8xl hurricane">Events</h2> */}
+        <h1 className=" md:text-4xl font-medium text-3xl text-center ">Events</h1>
+        
 
         {/* Loading and Error Handling */}
         {/* {loading ? (

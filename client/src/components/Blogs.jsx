@@ -87,7 +87,7 @@ const Blogs = () => {
                 {/* <h3 className="md:text-5xl text-3xl vina-sans font-semibold mb-6">All Blogs</h3> */}
                 <h1 className=" md:text-3xl font-medium text-2xl text-center my-4 mt-20 mb-5">All Blogs</h1>
 
-                <div className="w-full flex flex-wrap">
+                <div className="w-full flex justify-center mt-10 flex-wrap">
                     {blogs.map((blog) => (
                         <BlogCards key={blog._id} blog={blog} />
                     ))}

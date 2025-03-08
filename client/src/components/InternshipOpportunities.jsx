@@ -68,7 +68,9 @@ const InternshipOpportunities = () => {
                   <MdOutlineArrowBack size={25} />
                 </button>
         
-                <h2 className="text-3xl md:text-6xl hurricane">Internships Opportunities</h2>
+                {/* <h2 className="text-3xl md:text-6xl hurricane">Internships Opportunities</h2> */}
+          <h1 className=" md:text-4xl font-medium text-3xl text-center ">Internships Opportunities</h1>
+
 
         {/* Error Handling */}
         {error && (
