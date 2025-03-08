@@ -28,7 +28,7 @@ const Blogs = () => {
         fetchBlogs();
     }, []);
 
-    if (loading) return <p className="text-center">Loading blogs...</p>;
+    if (loading) return <div className="w-screen h-screen flex items-center justify-center"><p className="text-center">Loading blogs...</p></div>;
     if (error) return <p className="text-center text-red-500">{error}</p>;
 
     return (

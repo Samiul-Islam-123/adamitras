@@ -1,104 +1,117 @@
 import React from "react";
 import img from '/assets/about.png'
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
+import Marquee from "react-fast-marquee";
 
 const About = () => {
-    const founders = [
-        {
-          name: "John Doe",
-          designation: "Co-Founder",
-          image: "/assets/founder1.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-        {
-          name: "Jane Smith",
-          designation: "Co-Founder",
-          image: "/assets/founder2.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-      ];
-      
-      const techTeam = [
-        {
-          name: "Alice Johnson",
-          designation: "Frontend Developer",
-          image: "/assets/tech1.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-        {
-          name: "Bob Williams",
-          designation: "Backend Developer",
-          image: "/assets/tech2.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-        {
-          name: "Charlie Brown",
-          designation: "UI/UX Designer",
-          image: "/assets/tech3.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-        {
-          name: "Daisy Smith",
-          designation: "Full-Stack Developer",
-          image: "/assets/tech4.jpg",
-          socialLinks: {
-            linkedin: "#",
-            github: "#",
-            instagram: "#",
-          },
-        },
-      ];
-    return (
-        <>
-        <section className=" w-screen min-h-screen md:px-[10vw] px-[6vw] py-[8vw] flex   flex-col  overflow-hidden">
-            
-                {/* <h1 className=" md:text-8xl text-5xl hurricane bg-[url('/assets/bg.png')] bg-no-repeat  bg-cover w-fit">About us</h1> */}
-                <h1 className=" md:text-3xl font-medium text-2xl text-center">About Us</h1>
-                <p className=" text-center md:text-lg text-xs  px-1 md:mt-20 mt-10 ">
-                    Adamitras is a student-driven platform created by two students
-                    from the Batch of 2021-2025 at Adamas University with a simple
-                    yet powerful goal—to make academic resources more accessible,
-                    organized, and useful for students. What started as a basic
-                    website for sharing Previous Year Question Papers has now
-                    evolved into a comprehensive hub for academic and career-related
-                    information, catering to the diverse needs of students.<br /> <br /> 
-                    
-                     By bringing all essential materials under one roof,
-                    we aim to make exam preparation more structured and efficient.
-                    Beyond academics, Adamitras is committed to helping students
-                    navigate their career paths. 
-                </p>
+  const team = [
+    {
+      logo: '/assets/logo.png',
+      name: 'Arun Das',
+    },
+  ]
+  const founders = [
+    {
+      name: "Mainak Ghosh",
+      designation: "25' Batch BTech CSE",
+      image: "/assets/founder1.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+    {
+      name: "Saptadeep Das",
+      designation: "25' Batch BTech ECE",
+      image: "/assets/founder2.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+  ];
 
-            
+  const techTeam = [
+    {
+      name: "MD. Samiul Islam",
+      designation: "27' Batch BTech CSE",
+      image: "/assets/tech1.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+    {
+      name: "Sourish Samanta",
+      designation: "27' Batch BTech CSE",
+      image: "/assets/tech2.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+    {
+      name: "Samriddhi Sinha",
+      designation: "27' Batch BTech CSE",
+      image: "/assets/tech3.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+    {
+      name: "Aviroop Pal",
+      designation: "27' Batch BTech CSE",
+      image: "/assets/tech4.jpg",
+      socialLinks: {
+        linkedin: "#",
+        github: "#",
+        instagram: "#",
+      },
+    },
+  ];
+  return (
+    <>
+      <section className=" w-screen min-h-screen md:px-[10vw] px-[6vw] py-[8vw] flex   flex-col  overflow-hidden">
 
-            
+        {/* <h1 className=" md:text-8xl text-5xl hurricane bg-[url('/assets/bg.png')] bg-no-repeat  bg-cover w-fit">About us</h1> */}
+        <h1 className=" md:text-3xl font-medium text-2xl text-center">About Us</h1>
+        <p className=" text-center md:text-lg text-xs  px-1 md:mt-12 mt-5 font-light italic">“We make a living by what we get, but we make a life by what we give.”<br /><i className=" font-extralight"> - Winston Churchill</i></p>
+        <p className=" text-center md:text-lg text-xs  px-1 md:mt-5 mt-2 ">
+          At Adamitras, we are dedicated to empowering STEM students with the resources they need to excel academically and professionally. Our platform provides curated insights into industry trends, career roadmaps, and essential skill sets to help students make informed career choices. We also offer a comprehensive database of previous year question papers and sample papers, ensuring academic preparedness. Additionally, we keep students updated on global internship opportunities, bridging the gap between education and industry.
+        </p>
 
 
-        </section>
-        {/* Co-Founders Section */}
+
+
+
+
+      </section>
+
+      <section className="w-full min-h-[80vh] flex flex-col items-center px-6 py-12">
+        <h1 className="md:text-2xl font-medium text-xl text-center">
+          Team
+        </h1>
+
+        <Marquee gradient={true} gradientWidth={500} speed={30}>
+          {team.map((logo, name, index) => (
+            <div className=" flex flex-col gap-3">
+              <img key={index} src={logo} className="h-16" />
+              <h1 className=" text-md">{name}</h1>
+            </div>
+          ))}
+        </Marquee>
+
+      </section>
+      {/* Co-Founders Section */}
       <section className="w-full min-h-[80vh] flex flex-col items-center px-6 py-12">
         <h1 className="md:text-3xl font-medium text-2xl text-center">
-          Co-Founders
+          Founders
         </h1>
         <div className="flex flex-wrap justify-center gap-10 mt-10">
           {founders.map((founder, index) => (
@@ -154,8 +167,8 @@ const About = () => {
           ))}
         </div>
       </section>
-        </>
-    );
+    </>
+  );
 };
 
 export default About;
