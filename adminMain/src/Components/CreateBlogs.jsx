@@ -12,7 +12,7 @@ const CreateBlogs = () => {
   const fileInputRef = useRef(null);
   const editorRef = useRef(null);
 
-  const API_URL = `http://localhost:5500/blog`
+  const API_URL = `${import.meta.env.VITE_API_URL}/blog`
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
