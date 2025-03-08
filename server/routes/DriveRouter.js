@@ -320,7 +320,7 @@ DriveRouter.get("/roadmaps", async (req, res) => {
   try {
     // Find the Roadmaps folder in root
     const folderResponse = await drive.files.list({
-      q: `name = 'Roadmaps' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
+      q: `name = 'Roadmap' and mimeType = 'application/vnd.google-apps.folder' and '${ROOT_FOLDER_ID}' in parents`,
       fields: "files(id, name)",
     });
 
