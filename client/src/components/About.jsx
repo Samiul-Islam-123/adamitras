@@ -74,7 +74,7 @@ const About = () => {
       image: "/assets/founder1.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },
@@ -84,7 +84,7 @@ const About = () => {
       image: "/assets/founder2.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },
@@ -97,7 +97,7 @@ const About = () => {
       image: "/assets/tech1.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },
@@ -107,7 +107,7 @@ const About = () => {
       image: "/assets/tech2.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },
@@ -117,7 +117,7 @@ const About = () => {
       image: "/assets/tech3.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },
@@ -127,7 +127,7 @@ const About = () => {
       image: "/assets/tech4.jpg",
       socialLinks: {
         linkedin: "#",
-        github: "#",
+        
         instagram: "#",
       },
     },

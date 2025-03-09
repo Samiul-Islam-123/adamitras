@@ -259,11 +259,13 @@ DriveRouter.get("/courses", async (req, res) => {
       return res.status(404).json({ error: "No course folders found" });
     }
 
-    // Extract just the names and IDs of these folders
-    const courses = courseFoldersResponse.data.files.map(folder => ({
-      id: folder.id,
-      name: folder.name
-    }));
+    // Filter out the "Roadmap" folder
+    const courses = courseFoldersResponse.data.files
+      .filter(folder => folder.name !== "Roadmap")
+      .map(folder => ({
+        id: folder.id,
+        name: folder.name
+      }));
 
     res.json({ courses });
   } catch (error) {
@@ -271,6 +273,7 @@ DriveRouter.get("/courses", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch courses" });
   }
 });
+
 
 // Route to get all semesters available for a specific course
 DriveRouter.get("/semesters/:course", async (req, res) => {

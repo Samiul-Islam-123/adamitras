@@ -83,7 +83,7 @@ const Blogs = () => {
                     </div>
                 </div>
             </section>
-            <section className="w-screen min-h-screen overflow-hidden pt-8 md:px-20 px-5">
+            <section className="w-screen min-h-screen overflow-hidden py-10 pt-8 md:px-20 px-5">
                 {/* <h3 className="md:text-5xl text-3xl vina-sans font-semibold mb-6">All Blogs</h3> */}
                 <h1 className=" md:text-3xl font-medium text-2xl text-center my-4 mt-20 mb-5">All Blogs</h1>
 
