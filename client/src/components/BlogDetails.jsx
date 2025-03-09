@@ -125,7 +125,7 @@ const BlogDetails = () => {
                   />
                 )}
                 <span>{blog.author.username}</span> */}
-                <span>{blog.authorName}</span>
+                <span>By {blog.authorName}</span>
               </div>
             )}
             
