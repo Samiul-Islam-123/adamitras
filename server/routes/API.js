@@ -5,6 +5,7 @@ const APIRouter = express.Router();
 const cloudinary = require('../config/cloudinaryConfig');
 const authenticateToken = require('../middleware/auth');
 const PYQModel = require('../models/PYQModel');
+const FeedbackModel = require('../models/FeedbackModel');
 
 var logger = new Logger();
 
@@ -92,6 +93,29 @@ APIRouter.get('/pyq', async(req, res) => {
     try {
         const PYQs =await PYQModel.find();
         res.json({PYQs});
+    }
+    catch(error){
+        logger.error(error);
+        return res.json({
+            message : error.message,
+            success : false
+        })
+    }
+})
+
+APIRouter.post('/feedback', async(req,res) => {
+    const {username, email, message} = req.body;
+    try{
+        const feedback = new FeedbackModel({
+            username : username,
+            email : email,
+            message : message
+        })
+        await feedback.save();
+        res.json({
+            success : true,
+            message : "Thank you for your feedback"
+        })
     }
     catch(error){
         logger.error(error);
