@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaLinkedin, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import logo from "/assets/logo.png";
+import axios from "axios";
+import { useUser } from '@clerk/clerk-react'
 
 export default function Footer() {
   const [feedback, setFeedback] = useState("");
+  const { user } = useUser();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,13 +31,20 @@ export default function Footer() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
               <div className="flex space-x-4">
-                
-                <a href="https://www.linkedin.com/company/adamitras/" target="_blank" className=" text-gray-800">
+
+                <a href="https://www.linkedin.com/company/adamitras/" target="_blank" className="text-gray-800">
                   <FaLinkedin size={25} />
                 </a>
-                <a href="#" target="_blank" className=" text-gray-800">
+                <a href="mailto:adamitrasweb@gmail.com" target="_blank" className="text-gray-800">
                   <HiOutlineMail size={25} />
                 </a>
+                <a href="https://youtube.com/@adamitras" target="_blank" className="text-gray-800">
+                  <FaYoutube size={25} />
+                </a>
+                <a href="https://whatsapp.com/channel/0029VanA8tTFcow3FXisrx1I" target="_blank" className="text-gray-800">
+                  <FaWhatsapp size={25} />
+                </a>
+
               </div>
             </div>
           </div>
@@ -43,22 +53,30 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li  className="text-gray-800 hover:text-white transition-colors">
-                                 Home
-                
+              <li>
+                <a href="/" className="text-gray-800 hover:text-white transition-colors">
+                  Home
+                </a>
               </li>
-              <li className="text-gray-800 hover:text-white transition-colors">
-                                  Blogs
-                
+              <li>
+                <a href="/blogs" className="text-gray-800 hover:text-white transition-colors">
+                  Blogs
+                </a>
               </li>
-              <li className="text-gray-800 hover:text-white transition-colors">
-                                PYQs
-                
+              <li>
+                <a href="/pyqs" className="text-gray-800 hover:text-white transition-colors">
+                  PYQs
+                </a>
               </li>
-              <li className="text-gray-800 hover:text-white transition-colors">
-                
+              <li>
+                <a href="/career" className="text-gray-800 hover:text-white transition-colors">
                   Career
-                
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-800 hover:text-white transition-colors">
+                  Past members
+                </a>
               </li>
             </ul>
           </div>
@@ -68,12 +86,12 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
             <ul className="space-y-2">
               <li className="text-gray-800 hover:text-white transition-colors">
-                
-                  Adamas Knowledge City <br /> Barasat, West Bengal <br /> 700126
-                
+
+                Adamas Knowledge City, <br /> Barasat, West Bengal - 700126
+
               </li>
               <li className="text-gray-800 hover:text-white transition-colors">
-                  adamitras@gmail.com
+                adamitras@gmail.com
               </li>
               {/* <li>
                 <a className="text-gray-800 hover:text-white transition-colors">
@@ -85,14 +103,37 @@ export default function Footer() {
                   
                 </a>
               </li> */}
-              
+
             </ul>
           </div>
 
           {/* Feedback Section */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Feedback</h3>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault(); // Prevent default form submission
+                if (!user) {
+                  alert("Please log in to submit feedback.");
+                  return;
+                }
+
+                try {
+                  const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/feedback`, {
+                    username: user.fullName,
+                    email: user.primaryEmailAddress.emailAddress,
+                    message: feedback,
+                  });
+
+                  alert(res.data.message);
+                  setFeedback(""); // Clear input field after submission
+                } catch (error) {
+                  alert("Something went wrong. Please try again.");
+                  console.error(error);
+                }
+              }}
+              className="flex flex-col sm:flex-row gap-2"
+            >
               <input
                 type="text"
                 placeholder="Your thoughts..."
@@ -107,7 +148,15 @@ export default function Footer() {
                 Submit
               </button>
             </form>
+
+            <div style={{
+              marginTop: "15px"
+            }}>
+              © 2025 Adamitras. All Rights Reserved.
+            </div>
           </div>
+
+
         </div>
       </div>
     </footer>

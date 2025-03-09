@@ -97,7 +97,8 @@ const Roadmap = () => {
               <IoIosCloseCircle size={30} />
             </button>
 
-            <iframe src={selectedPdf} className="w-full h-full" title="PDF Viewer"></iframe>
+            <iframe allowFullScreen={false}
+              sandbox="allow-scripts allow-same-origin allow-forms" src={selectedPdf} className="w-full h-full" title="PDF Viewer"></iframe>
           </div>
         </div>
       )}

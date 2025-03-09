@@ -115,25 +115,26 @@ const BlogDetails = () => {
           <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
           
           <div className="flex flex-wrap items-center text-sm text-gray-500 mb-6 pb-4 border-b">
-            {blog.author && (
+            {blog.authorName && (
               <div className="flex items-center mr-6 mb-2">
-                {blog.author.avatarURL && (
+                {/* {blog.author.avatarURL && (
                   <img 
                     src={blog.author.avatarURL} 
                     alt={blog.author.username} 
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 )}
-                <span>{blog.author.username}</span>
+                <span>{blog.author.username}</span> */}
+                <span>{blog.authorName}</span>
               </div>
             )}
             
             <div className="flex items-center mr-6 mb-2">
               <Clock size={18} className="mr-1" />
-              <span>{formatDate(blog.createdAt)}</span>
+              <span>{formatDate(blog.publishedAt)}</span>
             </div>
             
-            {blog.likes && (
+            {/* {blog.likes && (
               <div className="flex items-center mr-6 mb-2">
                 <Heart size={18} className="mr-1" />
                 <span>{blog.likes.length} likes</span>
@@ -145,7 +146,7 @@ const BlogDetails = () => {
                 <MessageSquare size={18} className="mr-1" />
                 <span>{blog.comments.length} comments</span>
               </div>
-            )}
+            )} */}
           </div>
           
           {blog.tags && blog.tags.length > 0 && (
