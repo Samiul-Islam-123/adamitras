@@ -4,6 +4,8 @@ import { HiOutlineMail } from "react-icons/hi";
 import logo from "/assets/logo.png";
 import axios from "axios";
 import { useUser } from '@clerk/clerk-react'
+import { GoArrowUpRight } from "react-icons/go";
+
 
 export default function Footer() {
   const [feedback, setFeedback] = useState("");
@@ -105,6 +107,18 @@ export default function Footer() {
               </li> */}
 
             </ul>
+            <a style={{
+              marginTop : "25px"
+            }}
+              href="https://whatsapp.com/channel/0029VanA8tTFcow3FXisrx1I"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-md px-6 py-2 transition-colors inline-flex items-center gap-1"
+            >
+              Join <span className="text-sm relative -top-1">↗</span>
+            </a>
+
+
           </div>
 
           {/* Feedback Section */}
