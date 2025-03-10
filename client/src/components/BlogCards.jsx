@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BlogDetails from './BlogDetails';
 import {useNavigate} from "react-router-dom"
+import { Clock } from 'lucide-react';
 
 const BlogCards = ({ blog }) => {
     const [imageError, setImageError] = useState(false);
@@ -11,15 +12,20 @@ const BlogCards = ({ blog }) => {
         navigate(blog._id)
     }
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+      };
+
     // Convert Google Drive URL to a direct image link
     const getDirectImageURL = (url) => {
         const match = url.match(/(?:file\/d\/|id=)([^\/?]+)/);
         return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
     };
 
-    const imageURL = getDirectImageURL(blog.imageURL);
-    console.log("Image URL:", imageURL);
-
+    // const imageURL = getDirectImageURL(blog.imageURL);
+    // console.log("Image URL:", imageURL);
+    console.log(blog)
     return (
         <>
         {
@@ -39,6 +45,11 @@ const BlogCards = ({ blog }) => {
             <div className='lg:p-4 lg:pt-5 p-2'>
                 <h4 className='lg:text-xl text-sm font-semibold'>{blog.title}</h4>
                 <p className='text-xs text-gray-600 mt-2'>{blog.desc}</p>
+                <span>By {blog.authorName}</span>
+                <div className="flex items-center mr-6 mb-2">
+              <Clock size={18} className="mr-1" />
+              <span>{formatDate(blog.publishedAt)}</span>
+            </div>
             </div>
         </div>
         </>
