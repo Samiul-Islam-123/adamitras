@@ -79,8 +79,8 @@ const Hero = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
 
-                <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
-                <Route path="/blogs/:id" element={<ProtectedRoute><BlogDetails /></ProtectedRoute>} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blogs/:id" element={<BlogDetails />} />
                 
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />
                 <Route path="/career" element={<ProtectedRoute><Career /></ProtectedRoute>} />
