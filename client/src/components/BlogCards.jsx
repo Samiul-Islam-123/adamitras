@@ -44,11 +44,11 @@ const BlogCards = ({ blog }) => {
             </div>
             <div className='lg:p-4 lg:pt-5 p-2'>
                 <h4 className='lg:text-xl text-sm font-semibold'>{blog.title}</h4>
-                <p className='text-xs text-gray-600 mt-2'>{blog.desc}</p>
-                <span>By {blog.authorName}</span>
+                {/* <p className='text-xs text-gray-600 mt-2'>{blog.desc}</p> */}
+                <span className='md:text-sm text-xs'>By {blog.authorName}</span>
                 <div className="flex items-center mr-6 mb-2">
-              <Clock size={18} className="mr-1" />
-              <span>{formatDate(blog.publishedAt)}</span>
+              <Clock size={15} className="mr-1" />
+              <span  className='md:text-sm text-xs'>{formatDate(blog.publishedAt)}</span>
             </div>
             </div>
         </div>

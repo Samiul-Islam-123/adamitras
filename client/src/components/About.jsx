@@ -131,7 +131,7 @@ const About = () => {
     {
       name: "Samriddhi Sinha",
       designation: "CSE (Batch '23-'27)",
-      image: "/assets/tech_team/samridhhi_.jpg",
+      image: "/assets/tech_team/samridhhi_.jpeg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/samriddhi-sinha-555768280/",
 
@@ -235,7 +235,7 @@ const About = () => {
       </section>
 
       {/* Tech Team Section */}
-      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12">
+      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12 mb-10">
         <h1 className="md:text-3xl font-medium text-2xl text-center">
           Technical Team
         </h1>
