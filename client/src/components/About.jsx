@@ -7,7 +7,7 @@ import { HiOutlineMail } from "react-icons/hi";
 const About = () => {
   const team = [
     {
-      logo: '/assets/team/Aaliya(CSE).jpg',
+      logo: '/assets/newTeam/Aaliya.jpg',
       name: 'Aaliya Khurshid',
       designation: "CSE (Batch '22-'26)",
     },
@@ -17,17 +17,17 @@ const About = () => {
       designation: "BCA (Batch '24-'28)",
     },
     {
-      logo: '/assets/team/Sarthak(CSE).jpg',
+      logo: '/assets/newTeam/Sarthak.jpg',
       name: 'Sarthak Shah',
       designation: "CSE (Batch '21-'25)",
     },
     {
-      logo: '/assets/team/Sayani(CSE).jpg',
+      logo: '/assets/newTeam/Sayani.JPG',
       name: 'Sayani Das',
       designation: "CSE (Batch '24-'28)",
     },
     {
-      logo: '/assets/team/Soham(CSE).png',
+      logo: '/assets/newTeam/Soham.JPG',
       name: 'Soham Maity',
       designation: "CSE (Batch '22-'26)",
     },
@@ -91,14 +91,14 @@ const About = () => {
       image: "/assets/Mainak_.jpg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/mainakghosh2/",
-
+        
         email: "mailto:mainakghosh232@gmail.com ",
       },
     },
     {
       name: "Saptadeep Choudhury",
       designation: "ECE (Batch '21-'25)",
-      image: "/assets/saptadeep.png",
+      image: "/assets/newTeam/Sapatedeep.jpg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/saptadeep-choudhury",
 
@@ -114,7 +114,7 @@ const About = () => {
       image: "/assets/tech_team/samiul_.jpeg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/md-samiul-islam-b98475272/",
-
+        github: "https://github.com/Samiul-Islam-123",
         email: "mailto:isamiul099@gmail.com",
       },
     },
@@ -124,7 +124,7 @@ const About = () => {
       image: "/assets/tech_team/sourish.jpeg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/sourish-samanta-b762b42a1/",
-
+        github: "https://github.com/SourishSamanta",
         email: "mailto:sourishsamantaofficial@gmail.com",
       },
     },
@@ -134,17 +134,17 @@ const About = () => {
       image: "/assets/tech_team/samridhhi_.jpeg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/samriddhi-sinha-555768280/",
-
+        github: "https://github.com/Samriddhie",
         email: "mailto:sinhasamriddhi2000@gmail.com",
       },
     },
     {
       name: "Aviroop Pal",
       designation: "CSE (Batch '23-'27)",
-      image: "/assets/tech_team/aviroop.jpg",
+      image: "/assets/tech_team/aviroop.jpeg",
       socialLinks: {
         linkedin: "https://www.linkedin.com/in/aviroop-pal/",
-
+        github: "https://github.com/avirooppal",
         email: "mailto:avirooppal42@gmail.com",
       },
     },
@@ -167,25 +167,7 @@ const About = () => {
 
       </section>
 
-      <section className="w-full min-h-[40vh] flex flex-col items-center px-6 py-12">
-        <h1 className="md:text-2xl font-medium text-xl mb-10 text-center">
-          Team
-        </h1>
-
-        {/* Static container with properly displayed images */}
-        <div className="flex flex-wrap justify-center gap-8">
-          {team.map((e, index) => (
-            <div key={index} className="flex flex-col items-center gap-2 mx-4 mb-6">
-              {/* Changed from object-cover to object-contain */}
-              <div className="h-32 w-32 flex items-center justify-center">
-                <img src={e.logo} className="max-h-32 max-w-32 object-contain" alt={e.name} />
-              </div>
-              <h1 className="text-md">{e.name}</h1>
-              <p className="text-xs">{e.designation}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
 
       {/* <section className="w-full min-h-[40vh] flex flex-col items-center px-6 py-12">
@@ -235,7 +217,7 @@ const About = () => {
       </section>
 
       {/* Tech Team Section */}
-      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12 mb-10">
+      <section className="w-full min-h-[60vh] flex flex-col items-center px-6 py-12 ">
         <h1 className="md:text-3xl font-medium text-2xl text-center">
           Technical Team
         </h1>
@@ -261,6 +243,26 @@ const About = () => {
                   );
                 })}
               </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="w-full min-h-[40vh] flex flex-col items-center px-6 py-12">
+        <h1 className="md:text-2xl font-medium text-xl mb-10 text-center">
+          Team
+        </h1>
+
+        {/* Static container with properly displayed images */}
+        <div className="flex flex-wrap justify-center gap-8">
+          {team.map((e, index) => (
+            <div key={index} className="flex flex-col items-center gap-2 mx-4 mb-6">
+              {/* Changed from object-cover to object-contain */}
+              <div className="h-48 w-48 flex items-center justify-center">
+                <img src={e.logo} className="h-full w-full object-contain" alt={e.name} />
+              </div>
+              <h1 className="text-md">{e.name}</h1>
+              <p className="text-xs">{e.designation}</p>
             </div>
           ))}
         </div>

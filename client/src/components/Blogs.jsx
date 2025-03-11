@@ -38,7 +38,7 @@ const Blogs = () => {
                     {/* <h3 className="md:text-5xl text-3xl mt-36 font-semibold mb-10 vina-sans ">
                         Recent Blogs
                     </h3> */}
-                <h1 className=" md:text-3xl font-medium text-2xl text-center my-4 mt-20 mb-5">Recent Blogs</h1>
+                <h1 className=" md:text-3xl font-medium text-2xl text-center my-4 md:mt-44 mt-20 mb-5">Recent Blogs</h1>
 
 
                     <div className="relative w-[90%] flex items-center justify-center">
