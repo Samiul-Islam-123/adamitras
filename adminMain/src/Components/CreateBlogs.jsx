@@ -6,6 +6,7 @@ import { Upload, ImagePlus, Trash2, Loader2 } from 'lucide-react';
 const CreateBlogs = () => {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
   const [tags, setTags] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -56,7 +57,10 @@ const CreateBlogs = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('author', import.meta.env.VITE_ADMIN_ID);
+      //formData.append('author', import.meta.env.VITE_ADMIN_ID);
+      console.log(author)
+      formData.append('authorName', author)
+      
       //alert(import.meta.env.VITE_ADMIN_ID);
       // Add tags
       const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
@@ -104,6 +108,16 @@ const CreateBlogs = () => {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
+
+        {/* Author name Input */}
+        <input 
+          type="text"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          placeholder="Enter Enter Author name"
+          className="w-full p-2 border rounded-lg mb-4"
+          disabled={isLoading}
+        />
 
         {/* Title Input */}
         <input 
