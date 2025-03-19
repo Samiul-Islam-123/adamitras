@@ -146,7 +146,9 @@ const Blogs = () => {
                         className="w-6 h-6 rounded-full mr-2"
                       />
                     )}
-                    <span>{blog.author?.username || 'Anonymous'}</span>
+                    {/* <span>{blog.author?.username || 'Anonymous'}</span> */}
+                    <span>{blog.authorName || 'Anonymous'}</span>
+
                   </div>
                   
                   <div className="flex items-center">
