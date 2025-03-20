@@ -31,6 +31,16 @@ const About = () => {
       name: 'Soham Maity',
       designation: "CSE (Batch '22-'26)",
     },
+    {
+      logo: '/assets/newTeam/Dhrubangshu.jpg',
+      name: 'Dhrubangshu Saha',
+      designation: "CSE (Batch '24-'28)",
+    },
+    {
+      logo: '/assets/newTeam/Biswarup.jpg',
+      name: 'Biswarup Chattopadhyay',
+      designation: "ME (Batch '21-'25)",
+    },
 
     // {
     //   logo: '/assets/logo.png',
