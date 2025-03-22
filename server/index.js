@@ -10,6 +10,7 @@ const APIRouter = require('./routes/API');
 const DriveRouter = require('./routes/DriveRouter');
 const BlogRoutes = require('./routes/BlogRoutes');
 const InternshipRouter = require('./routes/InternshipRouter');
+const EventRouter = require('./routes/EventRouter')
 
 const app = express();
 const PORT = process.env.PORT || 5500;
@@ -35,6 +36,7 @@ app.use('/api', APIRouter);
 app.use('/drive', DriveRouter);
 app.use('/blog', BlogRoutes);
 app.use('/internship', InternshipRouter);
+app.use('/event', EventRouter);
 
 app.listen(PORT,async () => {
     logger.info("Server is starting...");
