@@ -13,12 +13,11 @@ EventRouter.post('/create', upload.single('image'), async(req, res) => {
             const uploadResult = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
                     { 
-                        folder: 'events', // Organize images in an events folder
+                        folder: 'events', 
                         allowed_formats: ['jpg', 'png', 'jpeg', 'gif'],
-                        // Optional transformations
                         transformation: [
-                            { width: 800, crop: "limit" }, // Limit image width
-                            { quality: "auto" } // Auto-optimize quality
+                            { width: 800, crop: "limit" },
+                            { quality: "auto" }
                         ]
                     }, 
                     (error, result) => {
@@ -42,10 +41,10 @@ EventRouter.post('/create', upload.single('image'), async(req, res) => {
             });
         }
 
-        if (!req.body.date) {
+        if (!req.body.eventStartDate) {
             return res.json({
                 success: false,
-                message: 'Event date is required'
+                message: 'Event start date is required'
             });
         }
 
@@ -54,10 +53,16 @@ EventRouter.post('/create', upload.single('image'), async(req, res) => {
             imageURL: imageURL,
             title: req.body.title,
             description: req.body.description || '',
-            date: new Date(req.body.date),
-            timestart: req.body.timestart || '',
-            timeend: req.body.timeend || '',
-            location: req.body.location || ''
+            eventStartDate: new Date(req.body.eventStartDate),
+            eventEndDate: req.body.eventEndDate ? new Date(req.body.eventEndDate) : null,
+            eventStartTime: req.body.eventStartTime || '',
+            eventEndTime: req.body.eventEndTime || '',
+            registrationStartDate: req.body.registrationStartDate ? new Date(req.body.registrationStartDate) : null,
+            registrationEndDate: req.body.registrationEndDate ? new Date(req.body.registrationEndDate) : null,
+            registrationStartTime: req.body.registrationStartTime || '',
+            registrationEndTime: req.body.registrationEndTime || '',
+            location: req.body.location || '',
+            createdBy: req.body.createdBy || null // Optional user ID who created the event
         });
 
         // Save to database
@@ -82,9 +87,9 @@ EventRouter.post('/create', upload.single('image'), async(req, res) => {
 
 EventRouter.get('/all', async(req, res) => {
     try {
-        // Fetch all events, sorted by date (upcoming first)
+        // Fetch all events, sorted by event start date (upcoming first)
         const events = await EventModel.find()
-            .sort({ date: 1 });
+            .sort({ eventStartDate: 1 });
 
         // If no events found, return appropriate response
         if (events.length === 0) {
@@ -207,11 +212,29 @@ EventRouter.put('/:id', upload.single('image'), async (req, res) => {
         // Only update fields that are provided
         if (req.body.title) updateData.title = req.body.title;
         if (req.body.description !== undefined) updateData.description = req.body.description;
-        if (req.body.date) updateData.date = new Date(req.body.date);
-        if (req.body.timestart !== undefined) updateData.timestart = req.body.timestart;
-        if (req.body.timeend !== undefined) updateData.timeend = req.body.timeend;
-
+        
+        // Date fields
+        if (req.body.eventStartDate) updateData.eventStartDate = new Date(req.body.eventStartDate);
+        if (req.body.eventEndDate !== undefined) {
+            updateData.eventEndDate = req.body.eventEndDate ? new Date(req.body.eventEndDate) : null;
+        }
+        
+        // Time fields
+        if (req.body.eventStartTime !== undefined) updateData.eventStartTime = req.body.eventStartTime;
+        if (req.body.eventEndTime !== undefined) updateData.eventEndTime = req.body.eventEndTime;
+        
+        // Registration fields
+        if (req.body.registrationStartDate !== undefined) {
+            updateData.registrationStartDate = req.body.registrationStartDate ? new Date(req.body.registrationStartDate) : null;
+        }
+        if (req.body.registrationEndDate !== undefined) {
+            updateData.registrationEndDate = req.body.registrationEndDate ? new Date(req.body.registrationEndDate) : null;
+        }
+        if (req.body.registrationStartTime !== undefined) updateData.registrationStartTime = req.body.registrationStartTime;
+        if (req.body.registrationEndTime !== undefined) updateData.registrationEndTime = req.body.registrationEndTime;
+        
         if (req.body.location !== undefined) updateData.location = req.body.location;
+        if (req.body.createdBy !== undefined) updateData.createdBy = req.body.createdBy;
 
         // If a new image is uploaded
         if (req.file) {
@@ -271,15 +294,15 @@ EventRouter.put('/:id', upload.single('image'), async (req, res) => {
     }
 });
 
-// Optional: Get upcoming events only
+// Get upcoming events
 EventRouter.get('/upcoming/all', async(req, res) => {
     try {
         const currentDate = new Date();
         
-        // Find events where date is greater than or equal to current date
+        // Find events where event start date is greater than or equal to current date
         const upcomingEvents = await EventModel.find({
-            date: { $gte: currentDate }
-        }).sort({ date: 1 }); // Sort by date ascending (soonest first)
+            eventStartDate: { $gte: currentDate }
+        }).sort({ eventStartDate: 1 }); // Sort by event start date ascending (soonest first)
 
         res.json({
             success: true,

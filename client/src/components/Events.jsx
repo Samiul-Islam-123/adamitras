@@ -27,7 +27,6 @@ const Event = () => {
     setError(null);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/event/all`);
-      // Check if response.data.data exists and is an array
       const eventsData = Array.isArray(response.data.data) ? response.data.data : [];
       setEvents(eventsData);
     } catch (error) {
@@ -38,16 +37,91 @@ const Event = () => {
     }
   };
 
-  // Format date for display
-  const formatDate = (dateString) => {
+  // Comprehensive date formatting function
+  const formatDate = (dateString, options = {}) => {
     if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    
+    const defaultOptions = { 
       weekday: 'short', 
       month: 'short', 
       day: 'numeric',
       year: 'numeric'
-    });
+    };
+
+    try {
+      const date = new Date(dateString);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        console.warn(`Invalid date: ${dateString}`);
+        return '';
+      }
+
+      return date.toLocaleDateString('en-US', { ...defaultOptions, ...options });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '';
+    }
+  };
+
+  // Format time with AM/PM
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+
+    try {
+      const [hours, minutes] = timeString.split(':');
+      const date = new Date();
+      date.setHours(parseInt(hours), parseInt(minutes));
+      
+      return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+      });
+    } catch (error) {
+      console.error('Error formatting time:', error);
+      return timeString;
+    }
+  };
+
+  // Determine event status
+  const getEventStatus = (event) => {
+    const now = new Date();
+    const registrationStartDate = event.registrationStartDate ? new Date(event.registrationStartDate) : null;
+    const registrationEndDate = event.registrationEndDate ? new Date(event.registrationEndDate) : null;
+    const eventStartDate = new Date(event.eventStartDate);
+    const eventEndDate = event.eventEndDate ? new Date(event.eventEndDate) : null;
+
+    console.log(`now : ${now}`);
+    console.log(`registrationStartDate : ${registrationStartDate}`);
+    console.log(`registrationEndDate : ${registrationEndDate}`);
+    console.log(`eventStartDate : ${eventStartDate}`);
+    console.log(`eventEndDate : ${eventEndDate}`);
+    
+
+    if (eventEndDate && now > eventEndDate) {
+      return { text: "Ended", color: "bg-red-500" };
+    }
+
+    if (now >= eventStartDate && (!eventEndDate || now <= eventEndDate)) {
+      return { text: "Live", color: "bg-green-500" };
+    }
+
+    if (registrationStartDate && registrationEndDate) {
+      if (now >= registrationStartDate && now <= registrationEndDate) {
+        return { text: "Registration Open", color: "bg-blue-500" };
+      }
+      
+      if (now < registrationStartDate) {
+        return { text: "Coming Soon", color: "bg-yellow-500" };
+      }
+      
+      if (now > registrationEndDate) {
+        return { text: "Registration Closed", color: "bg-red-500" };
+      }
+    }
+
+    return { text: "Upcoming", color: "bg-purple-500" };
   };
 
   return (
@@ -80,60 +154,71 @@ const Event = () => {
           <p className="text-3xl mt-10 text-black/40 text-center">No Events Scheduled.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {events.map((event) => (
-              <div
-                key={event._id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300"
-                onClick={() => setSelectedEvent(event)}
-              >
-                {event.imageURL ? (
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={event.imageURL}
-                      alt={event.title}
-                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
-                    />
+            {events.map((event) => {
+              const status = getEventStatus(event);
+              return (
+                <div
+                  key={event._id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 relative"
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  {/* Status Tag */}
+                  <div className={`absolute top-4 right-4 z-10 ${status.color} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
+                    {status.text}
                   </div>
-                ) : (
-                  <div className="h-48 bg-purple-100 flex items-center justify-center">
-                    <FaCalendarAlt size={40} className="text-purple-300" />
-                  </div>
-                )}
-                
-                <div className="p-5">
-                  <h3 className="text-xl font-bold mb-3 line-clamp-1">{event.title}</h3>
+
+                  {event.imageURL ? (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={event.imageURL}
+                        alt={event.title}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-48 bg-purple-100 flex items-center justify-center">
+                      <FaCalendarAlt size={40} className="text-purple-300" />
+                    </div>
+                  )}
                   
-                  <div className="flex items-center text-gray-600 mb-2">
-                    <FaCalendarAlt className="mr-2" />
-                    <span>{formatDate(event.date)}</span>
-                  </div>
-                  
-                  {event.timestart && (
+                  <div className="p-5">
+                    <h3 className="text-xl font-bold mb-3 line-clamp-1">{event.title}</h3>
+                    
                     <div className="flex items-center text-gray-600 mb-2">
-                      <FaClock className="mr-2" />
-                      <span>{event.timestart}{event.timeend ? ` - ${event.timeend}` : ''}</span>
+                      <FaCalendarAlt className="mr-2" />
+                      <span>{formatDate(event.eventStartDate)}</span>
                     </div>
-                  )}
-                  
-                  {event.location && (
-                    <div className="flex items-center text-gray-600 mb-3">
-                      <FaMapSigns className="mr-2" />
-                      <span>{event.location}</span>
-                    </div>
-                  )}
-                  
-                  {event.description && (
-                    <p className="text-gray-600 line-clamp-2 text-sm">{event.description}</p>
-                  )}
-                  
-                  <button 
-                    className="mt-4 px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors w-full"
-                  >
-                    View Details
-                  </button>
+                    
+                    {event.eventStartTime && (
+                      <div className="flex items-center text-gray-600 mb-2">
+                        <FaClock className="mr-2" />
+                        <span>
+                          {formatTime(event.eventStartTime)}
+                          {event.eventEndTime ? ` - ${formatTime(event.eventEndTime)}` : ''}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {event.location && (
+                      <div className="flex items-center text-gray-600 mb-3">
+                        <FaMapSigns className="mr-2" />
+                        <span>{event.location}</span>
+                      </div>
+                    )}
+                    
+                    {event.description && (
+                      <p className="text-gray-600 line-clamp-2 text-sm">{event.description}</p>
+                    )}
+                    
+                    <button 
+                      className="mt-4 px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors w-full"
+                    >
+                      View Details
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -170,19 +255,62 @@ const Event = () => {
                 <div className="flex items-center bg-purple-50 p-3 rounded-lg">
                   <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
                   <div>
-                    <p className="text-sm text-gray-500">Date</p>
-                    <p className="font-medium">{formatDate(selectedEvent.date)}</p>
+                    <p className="text-sm text-gray-500">Event Start Date</p>
+                    <p className="font-medium">{formatDate(selectedEvent.eventStartDate)}</p>
                   </div>
                 </div>
                 
-                {selectedEvent.timestart && (
+                {selectedEvent.eventEndDate && (
+                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
+                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
+                    <div>
+                      <p className="text-sm text-gray-500">Event End Date</p>
+                      <p className="font-medium">{formatDate(selectedEvent.eventEndDate)}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {selectedEvent.eventStartTime && (
                   <div className="flex items-center bg-purple-50 p-3 rounded-lg">
                     <FaClock className="text-purple-500 mr-3" size={20} />
                     <div>
-                      <p className="text-sm text-gray-500">Time</p>
+                      <p className="text-sm text-gray-500">Event Time</p>
                       <p className="font-medium">
-                        {selectedEvent.timestart}
-                        {selectedEvent.timeend ? ` - ${selectedEvent.timeend}` : ''}
+                        {formatTime(selectedEvent.eventStartTime)}
+                        {selectedEvent.eventEndTime ? ` - ${formatTime(selectedEvent.eventEndTime)}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
+                {selectedEvent.registrationStartDate && (
+                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
+                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
+                    <div>
+                      <p className="text-sm text-gray-500">Registration Start Date</p>
+                      <p className="font-medium">{formatDate(selectedEvent.registrationStartDate)}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {selectedEvent.registrationEndDate && (
+                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
+                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
+                    <div>
+                      <p className="text-sm text-gray-500">Registration End Date</p>
+                      <p className="font-medium">{formatDate(selectedEvent.registrationEndDate)}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {selectedEvent.registrationStartTime && (
+                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
+                    <FaClock className="text-purple-500 mr-3" size={20} />
+                    <div>
+                      <p className="text-sm text-gray-500">Registration Time</p>
+                      <p className="font-medium">
+                        {formatTime(selectedEvent.registrationStartTime)}
+                        {selectedEvent.registrationStartTime ? ` - ${formatTime(selectedEvent.registrationEndTime)}` : ''}
                       </p>
                     </div>
                   </div>
