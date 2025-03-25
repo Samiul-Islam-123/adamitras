@@ -166,6 +166,9 @@ const Events = () => {
         setEvents(prevEvents => [newEvent, ...prevEvents]);
       }
 
+      if(response.data.success === false)
+        alert(`${response.data.message}, ${response.data.error}`)
+
       // Reset form after successful submission
       resetForm();
     } catch (err) {
