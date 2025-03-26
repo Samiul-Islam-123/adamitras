@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import { FaCalendarAlt, FaMapSigns, FaClock } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import axios from "axios";
-import { IoIosCloseCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 
-const Event = () => {
+const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,13 +90,6 @@ const Event = () => {
     const eventStartDate = new Date(event.eventStartDate);
     const eventEndDate = event.eventEndDate ? new Date(event.eventEndDate) : null;
 
-    console.log(`now : ${now}`);
-    console.log(`registrationStartDate : ${registrationStartDate}`);
-    console.log(`registrationEndDate : ${registrationEndDate}`);
-    console.log(`eventStartDate : ${eventStartDate}`);
-    console.log(`eventEndDate : ${eventEndDate}`);
-    
-
     if (eventEndDate && now > eventEndDate) {
       return { text: "Ended", color: "bg-red-500" };
     }
@@ -160,7 +151,7 @@ const Event = () => {
                 <div
                   key={event._id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 relative"
-                  onClick={() => setSelectedEvent(event)}
+                  onClick={() => navigate(`/event/${event._id}`)}
                 >
                   {/* Status Tag */}
                   <div className={`absolute top-4 right-4 z-10 ${status.color} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
@@ -222,130 +213,8 @@ const Event = () => {
           </div>
         )}
       </div>
-
-      {/* Event Modal */}
-      {selectedEvent && (
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/50 px-4">
-          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setSelectedEvent(null)}
-              className="absolute top-4 right-4 bg-white text-red-500 p-1 rounded-full shadow-md hover:bg-red-500 hover:text-white transition-colors z-10"
-            >
-              <IoIosCloseCircle size={30} />
-            </button>
-
-            {selectedEvent.imageURL ? (
-              <div className="w-full h-64 md:h-80">
-                <img
-                  src={selectedEvent.imageURL}
-                  alt={selectedEvent.title}
-                  className="w-full h-full object-cover rounded-t-xl"
-                />
-              </div>
-            ) : (
-              <div className="w-full h-64 bg-purple-100 flex items-center justify-center rounded-t-xl">
-                <FaCalendarAlt size={64} className="text-purple-300" />
-              </div>
-            )}
-
-            <div className="p-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">{selectedEvent.title}</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                  <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
-                  <div>
-                    <p className="text-sm text-gray-500">Event Start Date</p>
-                    <p className="font-medium">{formatDate(selectedEvent.eventStartDate)}</p>
-                  </div>
-                </div>
-                
-                {selectedEvent.eventEndDate && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Event End Date</p>
-                      <p className="font-medium">{formatDate(selectedEvent.eventEndDate)}</p>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedEvent.eventStartTime && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                    <FaClock className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Event Time</p>
-                      <p className="font-medium">
-                        {formatTime(selectedEvent.eventStartTime)}
-                        {selectedEvent.eventEndTime ? ` - ${formatTime(selectedEvent.eventEndTime)}` : ''}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedEvent.registrationStartDate && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Registration Start Date</p>
-                      <p className="font-medium">{formatDate(selectedEvent.registrationStartDate)}</p>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedEvent.registrationEndDate && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                    <FaCalendarAlt className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Registration End Date</p>
-                      <p className="font-medium">{formatDate(selectedEvent.registrationEndDate)}</p>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedEvent.registrationStartTime && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg">
-                    <FaClock className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Registration Time</p>
-                      <p className="font-medium">
-                        {formatTime(selectedEvent.registrationStartTime)}
-                        {selectedEvent.registrationStartTime ? ` - ${formatTime(selectedEvent.registrationEndTime)}` : ''}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedEvent.location && (
-                  <div className="flex items-center bg-purple-50 p-3 rounded-lg md:col-span-2">
-                    <FaMapSigns className="text-purple-500 mr-3" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-500">Location</p>
-                      <p className="font-medium">{selectedEvent.location}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-              
-              {selectedEvent.description && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">Description</h3>
-                  <p className="text-gray-700 whitespace-pre-line">{selectedEvent.description}</p>
-                </div>
-              )}
-              
-              <button 
-                onClick={() => setSelectedEvent(null)}
-                className="w-full py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors font-medium"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default Event;
+export default Events;

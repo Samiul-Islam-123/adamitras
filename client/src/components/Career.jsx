@@ -8,7 +8,7 @@ const Career = () => {
   const options = [
     { name: 'Roadmaps', color: 'bg-blue-500', icon: <FaMapSigns size={40} />, path: 'roadmaps' },
     { name: 'Internship Opportunities', color: 'bg-green-500', icon: <FaBriefcase size={40} />, path: 'internship-opportunities' },
-    { name: 'Events', color: 'bg-purple-500', icon: <FaCalendarAlt size={40} />, path: 'events' },
+    { name: 'Events', color: 'bg-purple-500', icon: <FaCalendarAlt size={40} />, path: 'event' },
     { name: 'Coming Soon', color: 'bg-gray-300', icon: <FaHourglassHalf size={40} />, path: 'career' },
   ];
 
