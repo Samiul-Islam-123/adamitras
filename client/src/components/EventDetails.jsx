@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { ArrowUpRight } from "lucide-react";
 
 
 const EventDetails = () => {
@@ -20,31 +21,31 @@ const EventDetails = () => {
         return (
             <div className="mt-6 md:mt-0">
                 <h3 className="text-2xl font-semibold mb-4">Event Description</h3>
-                <ReactMarkdown 
+                <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     className="prose prose-sm dark:prose-invert max-w-none"
                     components={{
-                        h1: ({node, ...props}) => <h2 className="text-xl font-bold mb-2" {...props} />,
-                        h2: ({node, ...props}) => <h3 className="text-lg font-semibold mb-2" {...props} />,
-                        a: ({node, ...props}) => (
-                            <a 
-                                className="text-purple-600 hover:underline" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                {...props} 
+                        h1: ({ node, ...props }) => <h2 className="text-xl font-bold mb-2" {...props} />,
+                        h2: ({ node, ...props }) => <h3 className="text-lg font-semibold mb-2" {...props} />,
+                        a: ({ node, ...props }) => (
+                            <a
+                                className="text-purple-600 hover:underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                {...props}
                             />
                         ),
-                        code: ({node, inline, className, children, ...props}) => {
+                        code: ({ node, inline, className, children, ...props }) => {
                             return !inline ? (
-                                <code 
-                                    className={`${className} bg-gray-100 p-2 rounded-md text-sm block overflow-x-auto`} 
+                                <code
+                                    className={`${className} bg-gray-100 p-2 rounded-md text-sm block overflow-x-auto`}
                                     {...props}
                                 >
                                     {children}
                                 </code>
                             ) : (
-                                <code 
-                                    className="bg-gray-100 px-1 rounded text-sm" 
+                                <code
+                                    className="bg-gray-100 px-1 rounded text-sm"
                                     {...props}
                                 >
                                     {children}
@@ -275,7 +276,7 @@ const EventDetails = () => {
                                 </div>
                             )}
 
-                            {event.registrationStartTime && (
+                            {/* {event.registrationStartTime && (
                                 <div className="flex items-center bg-purple-50 p-3 rounded-lg">
                                     <FaClock className="text-purple-500 mr-3" size={20} />
                                     <div>
@@ -286,7 +287,7 @@ const EventDetails = () => {
                                         </p>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
 
                             {event.location && (
                                 <div className="flex items-center bg-purple-50 p-3 rounded-lg">
@@ -298,6 +299,12 @@ const EventDetails = () => {
                                 </div>
                             )}
                         </div>
+
+                        <a href="https://signifiya.tech" target="_blank"><button
+                            className="mt-4 px-4 py-3 bg-purple-500 text-white flex items-center justify-center rounded-lg hover:bg-purple-600 transition-colors w-full"
+                        >
+                            Visit Website <ArrowUpRight />
+                        </button></a>
                     </div>
 
                     {/* Right Column - Description */}
