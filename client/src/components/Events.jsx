@@ -13,8 +13,8 @@ const Events = () => {
 
   useEffect(() => {
     gsap.timeline()
-      .to(".elem", { height: "100%", duration: 1.5, ease: "expo.inOut" })
-      .to(".elem", { height: "0%", duration: 1, ease: "expo.inOut" })
+      .to(".elem", { height: "100vh", duration: 1.5, ease: "expo.inOut" })
+      .to(".elem", { height: "0vh", duration: 1, ease: "expo.inOut" })
       .to(".show", { opacity: 1 });
 
     fetchEvents();
@@ -117,6 +117,7 @@ const Events = () => {
 
   return (
     <div className="z-30 overflow-x-clip relative w-screen min-h-screen bg-white flex flex-col px-4 md:px-5 py-16">
+      
       <div className="elem absolute w-screen h-0 text-white top-0 left-0 z-30 bg-purple-500 flex flex-col items-center justify-center">
         <FaCalendarAlt size={40} />
         <h1 className="text-center mt-2 text-4xl">Events</h1>
