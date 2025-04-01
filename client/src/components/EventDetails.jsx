@@ -218,9 +218,9 @@ const EventDetails = () => {
                         <div className=" flex flex-col gap-3">
                             <h2 className="text-3xl md:text-4xl font-bold">{event.title}</h2>
                             {/* Status Tag */}
-                            <div className={` w-fit z-10 ${status.color} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
+                            {/* <div className={` w-fit z-10 ${status.color} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
                                 {status.text}
-                            </div>
+                            </div> */}
                         </div>
 
 
