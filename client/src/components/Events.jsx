@@ -53,6 +53,33 @@ const Events = () => {
     }
   };
 
+  // Date formatting function
+  const formatDate = (dateString, options = {}) => {
+    if (!dateString) return '';
+
+    const defaultOptions = {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    };
+
+    try {
+        const date = new Date(dateString);
+
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+            console.warn(`Invalid date: ${dateString}`);
+            return '';
+        }
+
+        return date.toLocaleDateString('en-US', { ...defaultOptions, ...options });
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return '';
+    }
+};
+
   return (
     <div className="z-30 overflow-x-clip relative w-screen min-h-screen bg-white flex flex-col px-4 md:px-5 py-16">
       <div className="elem absolute w-screen h-0 text-white top-0 left-0 z-30 bg-purple-500 flex flex-col items-center justify-center">
@@ -107,7 +134,7 @@ const Events = () => {
 
                   <div className="flex items-center text-gray-600 mb-2">
                     <FaCalendarAlt className="mr-2" />
-                    <span>{event.eventStartDate}</span>
+                    {formatDate(event.eventStartDate)}
                   </div>
 
                   {event.eventStartTime && (
