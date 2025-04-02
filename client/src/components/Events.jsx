@@ -39,7 +39,7 @@ const Events = () => {
     switch (status) {
       case "registration open":
         return "bg-blue-500";
-      case "registration closed":
+      case "Registration Closed":
         return "bg-red-500";
       case "Live":
         return "bg-green-500";
