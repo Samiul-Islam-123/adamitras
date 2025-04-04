@@ -111,10 +111,12 @@ const Events = () => {
                 onClick={() => navigate(`/event/${event._id}`)}
               >
                 {/* Status Tag */}
+               {event.currentStatus && (<>
                 <div className={`absolute top-4 right-4 z-10 ${getStatusColor(event.currentStatus)} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
                   {event.currentStatus}
                 </div>
 
+               </>)}
                 {event.imageURL ? (
                   <div className="h-48 overflow-hidden">
                     <img
