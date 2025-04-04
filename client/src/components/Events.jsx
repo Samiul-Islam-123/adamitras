@@ -35,9 +35,91 @@ const Events = () => {
     }
   };
 
+  // Function to determine the current status of an event dynamically
+  const getEventStatus = (event) => {
+    const now = new Date();
+    console.log(`--- DEBUG EVENT: ${event.title} ---`);
+    console.log(`Current time: ${now.toLocaleString()}`);
+    
+    // Parse event dates and times
+    const regStartDate = new Date(event.registrationStartDate);
+    const regEndDate = new Date(event.registrationEndDate);
+    const eventStartDate = new Date(event.eventStartDate);
+    const eventEndDate = new Date(event.eventEndDate);
+    
+    console.log(`Initial parsed dates:`);
+    console.log(`- Registration start: ${regStartDate.toLocaleString()}`);
+    console.log(`- Registration end: ${regEndDate.toLocaleString()}`);
+    console.log(`- Event start: ${eventStartDate.toLocaleString()}`);
+    console.log(`- Event end: ${eventEndDate.toLocaleString()}`);
+    console.log(`- Registration start time: ${event.registrationStartTime}`);
+    console.log(`- Registration end time: ${event.registrationEndTime}`);
+    console.log(`- Event start time: ${event.eventStartTime}`);
+    console.log(`- Event end time: ${event.eventEndTime}`);
+    
+    // Set time components for more accurate comparison
+    if (event.registrationStartTime) {
+      const [startHours, startMinutes] = event.registrationStartTime.split(':').map(Number);
+      regStartDate.setHours(startHours, startMinutes, 0);
+      console.log(`Applied start time: ${startHours}:${startMinutes}, new regStartDate: ${regStartDate.toLocaleString()}`);
+    }
+    
+    if (event.registrationEndTime) {
+      const [endHours, endMinutes] = event.registrationEndTime.split(':').map(Number);
+      regEndDate.setHours(endHours === 0 ? 23 : endHours, endMinutes === 0 ? 59 : endMinutes, 59);
+      console.log(`Applied end time: ${endHours === 0 ? 23 : endHours}:${endMinutes === 0 ? 59 : endMinutes}, new regEndDate: ${regEndDate.toLocaleString()}`);
+    } else {
+      // Default to end of day if no specific time
+      regEndDate.setHours(23, 59, 59);
+      console.log(`No reg end time specified, defaulting to end of day: ${regEndDate.toLocaleString()}`);
+    }
+    
+    if (event.eventStartTime) {
+      const [startHours, startMinutes] = event.eventStartTime.split(':').map(Number);
+      eventStartDate.setHours(startHours, startMinutes, 0);
+      console.log(`Applied event start time: ${startHours}:${startMinutes}, new eventStartDate: ${eventStartDate.toLocaleString()}`);
+    }
+    
+    if (event.eventEndTime) {
+      const [endHours, endMinutes] = event.eventEndTime.split(':').map(Number);
+      eventEndDate.setHours(endHours, endMinutes, 59);
+      console.log(`Applied event end time: ${endHours}:${endMinutes}, new eventEndDate: ${eventEndDate.toLocaleString()}`);
+    } else {
+      // Default to end of day if no specific time
+      eventEndDate.setHours(23, 59, 59);
+      console.log(`No event end time specified, defaulting to end of day: ${eventEndDate.toLocaleString()}`);
+    }
+    
+    console.log(`Final date comparison values:`);
+    console.log(`- now < regStartDate: ${now < regStartDate} (${now.toLocaleString()} < ${regStartDate.toLocaleString()})`);
+    console.log(`- now >= regStartDate && now <= regEndDate: ${now >= regStartDate && now <= regEndDate} (${regStartDate.toLocaleString()} <= ${now.toLocaleString()} <= ${regEndDate.toLocaleString()})`);
+    console.log(`- now > regEndDate && now < eventStartDate: ${now > regEndDate && now < eventStartDate} (${now.toLocaleString()} > ${regEndDate.toLocaleString()} && ${now.toLocaleString()} < ${eventStartDate.toLocaleString()})`);
+    console.log(`- now >= eventStartDate && now <= eventEndDate: ${now >= eventStartDate && now <= eventEndDate} (${now.toLocaleString()} >= ${eventStartDate.toLocaleString()} && ${now.toLocaleString()} <= ${eventEndDate.toLocaleString()})`);
+    console.log(`- now > eventEndDate: ${now > eventEndDate} (${now.toLocaleString()} > ${eventEndDate.toLocaleString()})`);
+    
+    // Determine status based on current time
+    let status;
+    if (now < regStartDate) {
+      status = "Coming Soon";
+    } else if (now >= regStartDate && now <= regEndDate) {
+      status = "Registration Open";
+    } else if (now > regEndDate && now < eventStartDate) {
+      status = "Registration Closed";
+    } else if (now >= eventStartDate && now <= eventEndDate) {
+      status = "Live";
+    } else {
+      status = "Ended";
+    }
+    
+    console.log(`Final status determined: ${status}`);
+    console.log(`--- END DEBUG EVENT: ${event.title} ---\n`);
+    
+    return status;
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
-      case "registration open":
+      case "Registration Open":
         return "bg-blue-500";
       case "Registration Closed":
         return "bg-red-500";
@@ -47,7 +129,6 @@ const Events = () => {
         return "bg-gray-500";
       case "Coming Soon":
         return "bg-yellow-500";
-      case "Upcoming":
       default:
         return "bg-purple-500";
     }
@@ -78,7 +159,7 @@ const Events = () => {
         console.error('Error formatting date:', error);
         return '';
     }
-};
+  };
 
   return (
     <div className="z-30 overflow-x-clip relative w-screen min-h-screen bg-white flex flex-col px-4 md:px-5 py-16">
@@ -104,65 +185,68 @@ const Events = () => {
           <p className="text-3xl mt-10 text-black/40 text-center">No Events Scheduled.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {events.map((event) => (
-              <div
-                key={event._id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 relative"
-                onClick={() => navigate(`/event/${event._id}`)}
-              >
-                {/* Status Tag */}
-               {event.currentStatus && (<>
-                <div className={`absolute top-4 right-4 z-10 ${getStatusColor(event.currentStatus)} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
-                  {event.currentStatus}
-                </div>
-
-               </>)}
-                {event.imageURL ? (
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={event.imageURL}
-                      alt={event.title}
-                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-48 bg-purple-100 flex items-center justify-center">
-                    <FaCalendarAlt size={40} className="text-purple-300" />
-                  </div>
-                )}
-
-                <div className="p-5">
-                  <h3 className="text-xl font-bold mb-3 line-clamp-1">{event.title}</h3>
-
-                  <div className="flex items-center text-gray-600 mb-2">
-                    <FaCalendarAlt className="mr-2" />
-                    {formatDate(event.eventStartDate)}
+            {events.map((event) => {
+              // Calculate dynamic status
+              const eventStatus = getEventStatus(event);
+              
+              return (
+                <div
+                  key={event._id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 relative"
+                  onClick={() => navigate(`/event/${event._id}`)}
+                >
+                  {/* Status Tag - using dynamically calculated status */}
+                  <div className={`absolute top-4 right-4 z-10 ${getStatusColor(eventStatus)} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
+                    {eventStatus}
                   </div>
 
-                  {event.eventStartTime && (
+                  {event.imageURL ? (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={event.imageURL}
+                        alt={event.title}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-48 bg-purple-100 flex items-center justify-center">
+                      <FaCalendarAlt size={40} className="text-purple-300" />
+                    </div>
+                  )}
+
+                  <div className="p-5">
+                    <h3 className="text-xl font-bold mb-3 line-clamp-1">{event.title}</h3>
+
                     <div className="flex items-center text-gray-600 mb-2">
-                      <FaClock className="mr-2" />
-                      <span>{event.eventStartTime} {event.eventEndTime ? ` - ${event.eventEndTime}` : ''}</span>
+                      <FaCalendarAlt className="mr-2" />
+                      {formatDate(event.eventStartDate)}
                     </div>
-                  )}
 
-                  {event.location && (
-                    <div className="flex items-center text-gray-600 mb-3">
-                      <FaMapSigns className="mr-2" />
-                      <span>{event.location}</span>
-                    </div>
-                  )}
+                    {event.eventStartTime && (
+                      <div className="flex items-center text-gray-600 mb-2">
+                        <FaClock className="mr-2" />
+                        <span>{event.eventStartTime} {event.eventEndTime ? ` - ${event.eventEndTime}` : ''}</span>
+                      </div>
+                    )}
 
-                  {event.description && (
-                    <p className="text-gray-600 line-clamp-2 text-sm">{event.description}</p>
-                  )}
+                    {event.location && (
+                      <div className="flex items-center text-gray-600 mb-3">
+                        <FaMapSigns className="mr-2" />
+                        <span>{event.location}</span>
+                      </div>
+                    )}
 
-                  <button className="mt-4 px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors w-full">
-                    View Details
-                  </button>
+                    {event.description && (
+                      <p className="text-gray-600 line-clamp-2 text-sm">{event.description}</p>
+                    )}
+
+                    <button className="mt-4 px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors w-full">
+                      View Details
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
