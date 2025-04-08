@@ -43,7 +43,7 @@ const Events = () => {
         return "bg-red-500";
       case "Live":
         return "bg-green-500";
-      case "Ended":
+      case "Closed":
         return "bg-gray-500";
       case "Coming Soon":
         return "bg-yellow-500";
