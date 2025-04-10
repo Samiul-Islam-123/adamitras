@@ -8,8 +8,8 @@ const upload = require('../config/multerConfig')
 // Create a new blog post
 BlogRoutes.post("/post-blog", upload.single('thumbnail'), async (req, res) => {
   try {
-    const { title, content, author, authorName, tags, imageURL } = req.body;
-    console.log(authorName)
+    const { title, content, author, authorName, tags, imageURL, publishedAt } = req.body;
+    //console.log(publishedAt)
     // Validate required fields
     if (!title || !content) {
       return res.status(400).json({
@@ -49,7 +49,7 @@ BlogRoutes.post("/post-blog", upload.single('thumbnail'), async (req, res) => {
       uploadStream.end(req.file.buffer);
     });
 
-    const newBlog = new BlogModel({ title, content, authorName, tags, 
+    const newBlog = new BlogModel({ title, content, authorName, tags, publishedAt,
       imageURL : uploadResult.secure_url
      });
     await newBlog.save();

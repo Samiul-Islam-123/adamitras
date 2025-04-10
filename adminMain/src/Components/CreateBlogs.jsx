@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import TextEditor from './TextEditor';
-import { Upload, ImagePlus, Trash2, Loader2 } from 'lucide-react';
+import { Upload, ImagePlus, Trash2, Loader2, Calendar } from 'lucide-react';
 
 const CreateBlogs = () => {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [tags, setTags] = useState('');
+  const [publishDate, setPublishDate] = useState('');
+  const [useCurrentDate, setUseCurrentDate] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
@@ -26,6 +28,13 @@ const CreateBlogs = () => {
     setImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  const handleDateToggle = (e) => {
+    setUseCurrentDate(e.target.checked);
+    if (e.target.checked) {
+      setPublishDate('');
     }
   };
 
@@ -49,6 +58,11 @@ const CreateBlogs = () => {
       return;
     }
 
+    if (!useCurrentDate && !publishDate) {
+      setError('Please select a publish date or use current date');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -58,8 +72,13 @@ const CreateBlogs = () => {
       formData.append('title', title);
       formData.append('content', content);
       //formData.append('author', import.meta.env.VITE_ADMIN_ID);
-      console.log(author)
-      formData.append('authorName', author)
+      console.log(author);
+      formData.append('authorName', author);
+      
+      // Add date - either current date or custom date
+      if (!useCurrentDate && publishDate) {
+        formData.append('publishedAt', new Date(publishDate).toISOString());
+      }
       
       //alert(import.meta.env.VITE_ADMIN_ID);
       // Add tags
@@ -79,7 +98,10 @@ const CreateBlogs = () => {
       // Reset form
       setTitle('');
       setTags('');
+      setAuthor('');
       setImage(null);
+      setPublishDate('');
+      setUseCurrentDate(true);
       if (editorRef.current) {
         editorRef.current.innerHTML = '';
       }
@@ -114,7 +136,7 @@ const CreateBlogs = () => {
           type="text"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Enter Enter Author name"
+          placeholder="Enter Author name"
           className="w-full p-2 border rounded-lg mb-4"
           disabled={isLoading}
         />
@@ -138,6 +160,38 @@ const CreateBlogs = () => {
           className="w-full p-2 border rounded-lg mb-4"
           disabled={isLoading}
         />
+
+        {/* Date Selection */}
+        <div className="mb-4">
+          <div className="flex items-center mb-2">
+            <Calendar size={20} className="mr-2 text-gray-500" />
+            <span className="text-gray-700">Publish Date</span>
+          </div>
+          
+          <div className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              id="useCurrentDate"
+              checked={useCurrentDate}
+              onChange={handleDateToggle}
+              className="mr-2"
+              disabled={isLoading}
+            />
+            <label htmlFor="useCurrentDate" className="text-sm text-gray-600">
+              Use current date
+            </label>
+          </div>
+          
+          {!useCurrentDate && (
+            <input
+              type="date"
+              value={publishDate}
+              onChange={(e) => setPublishDate(e.target.value)}
+              className="w-full p-2 border rounded-lg"
+              disabled={isLoading || useCurrentDate}
+            />
+          )}
+        </div>
 
         {/* Thumbnail Upload */}
         <div className="mb-4">
