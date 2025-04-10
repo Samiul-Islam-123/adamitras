@@ -9,7 +9,7 @@ const upload = require('../config/multerConfig')
 BlogRoutes.post("/post-blog", upload.single('thumbnail'), async (req, res) => {
   try {
     const { title, content, author, authorName, tags, imageURL, publishedAt } = req.body;
-    console.log(publishedAt)
+    //console.log(publishedAt)
     // Validate required fields
     if (!title || !content) {
       return res.status(400).json({
