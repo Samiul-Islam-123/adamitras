@@ -79,11 +79,11 @@ const Hero = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
 
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blogs/:id" element={<BlogDetails />} />
+                {/* <Route path="/blogs" element={<Blogs />} /> */}
+                {/* <Route path="/blogs/:id" element={<BlogDetails />} /> */}
                 
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />
-                <Route path="/career" element={<Career />} />
+                {/* <Route path="/career" element={<Career />} /> */}
                 {/* <Route path="career/*" element={<ProtectedRoute><CareerRoutes /></ProtectedRoute>} /> */}
             </Routes>
             <Nav />
