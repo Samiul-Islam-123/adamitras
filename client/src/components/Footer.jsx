@@ -60,11 +60,7 @@ export default function Footer() {
                   Home
                 </a>
               </li>
-              <li>
-                <a href="/blogs" className="text-gray-800 hover:text-white transition-colors">
-                  Blogs
-                </a>
-              </li>
+              
               <li>
                 <a href="/pyqs" className="text-gray-800 hover:text-white transition-colors">
                   PYQs
@@ -75,11 +71,7 @@ export default function Footer() {
                   Career
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-gray-800 hover:text-white transition-colors">
-                  Past members
-                </a>
-              </li>
+              
             </ul>
           </div>
 
