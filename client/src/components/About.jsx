@@ -12,11 +12,6 @@ const About = () => {
       designation: "CSE (Batch '22-'26)",
     },
     {
-      logo: '/assets/team/Ankur(BCA).jpg',
-      name: 'Ankur Dutta',
-      designation: "BCA (Batch '24-'28)",
-    },
-    {
       logo: '/assets/newTeam/Sarthak.jpg',
       name: 'Sarthak Shah',
       designation: "CSE (Batch '21-'25)",
@@ -30,11 +25,6 @@ const About = () => {
       logo: '/assets/newTeam/Soham.JPG',
       name: 'Soham Maity',
       designation: "CSE (Batch '22-'26)",
-    },
-    {
-      logo: '/assets/newTeam/Dhrubangshu.jpg',
-      name: 'Dhrubangshu Saha',
-      designation: "CSE (Batch '24-'28)",
     },
     {
       logo: '/assets/newTeam/Biswarup.jpg',
