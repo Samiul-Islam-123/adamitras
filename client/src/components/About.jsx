@@ -157,7 +157,7 @@ const About = () => {
         <h1 className=" md:text-3xl font-medium text-2xl mb-10 text-center">About Us</h1>
         <p className=" text-center md:text-lg text-xs  px-1 md:mt-12 mt-5 font-light italic">“We make a living by what we get, but we make a life by what we give.”<br /><i className=" font-extralight"> - Winston Churchill</i></p>
         <p className=" text-center md:text-lg text-xs  px-1 md:mt-5 mt-2 ">
-          At Adamitras, we are dedicated to empowering STEM students with the resources they need to excel academically and professionally. Our platform provides curated insights into industry trends, career roadmaps, and essential skill sets to help students make informed career choices. We also offer a comprehensive database of previous year question papers and sample papers, ensuring academic preparedness. Additionally, we keep students updated on global internship opportunities, bridging the gap between education and industry.
+          At Adamitras, we are dedicated to empowering STEM students with the resources they need to excel academically and professionally. Our platform provides curated insights into industry trends, career roadmaps, and essential skill sets to help students make informed career choices. We also offer a comprehensive database of previous year question papers and sample papers, ensuring academic preparedness.
         </p>
 
 

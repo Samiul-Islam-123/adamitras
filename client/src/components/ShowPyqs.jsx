@@ -49,7 +49,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
     <div className="fixed top-0 left-0 z-20 w-screen h-screen bg-black/15 flex xl:pt-20 md:items-start justify-center items-center ">
       <div className="flex w-full h-[80%] justify-center">
         <div className="md:w-[60%] w-[80%] h-[100%] bg-[#FFF4CE] border-4 border-[#EFC740] rounded-3xl  overflow-y-auto hide-scrollbar">
-          <div className="flex gap-3 md:p-20 py-6 px-2">
+          {/* <div className="flex gap-3 md:p-20 py-6 px-2">
             <input
               type="text"
               className="focus:outline-none py-2 md:px-3 px-2 w-60 border-2 border-[#EFC740] rounded-md"
@@ -58,7 +58,7 @@ const ShowPyqs = ({ handleclick, selectedCourse, selectedSemester, selectedSubje
             <button className="p-3 bg-[#EFC740] rounded-full text-white">
               <FaSearch />
             </button>
-          </div>
+          </div> */}
           <div className="w-full flex-1">
             {loading ? (
               <p className="md:mx-16 mx-3 py-3">Loading PYQs...</p>

@@ -83,7 +83,7 @@ const Hero = () => {
                 {/* <Route path="/blogs/:id" element={<BlogDetails />} /> */}
                 
                 <Route path="/pyqs" element={<ProtectedRoute><Pyq /></ProtectedRoute>} />
-                <Route path="/career" element={<Career />} />
+                <Route path="/career" element={<ProtectedRoute><Career /></ProtectedRoute>} />
                 {/* <Route path="career/*" element={<ProtectedRoute><CareerRoutes /></ProtectedRoute>} /> */}
             </Routes>
             <Nav />
