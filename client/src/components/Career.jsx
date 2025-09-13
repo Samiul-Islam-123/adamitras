@@ -66,7 +66,7 @@ const Career = () => {
     ];
 
     return (
-        <section className="w-screen h-screen flex items-center justify-center flex-col">
+        <section className="w-screen min-h-screen flex items-center justify-start flex-col">
             {/* <div className='grid grid-cols-2 gap-6 -mt-20'>
         {options.map((option, index) => (
           <button
