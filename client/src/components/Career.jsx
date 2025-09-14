@@ -80,14 +80,14 @@ const Career = () => {
         ))}
       </div> */}
 
-            <div className=" w-full h-full py-20 px-10">
+            <div className=" w-full h-[90vh] overflow-y-auto py-20 px-10">
                 <div className="  w-full">
                     {/* <h2 className="text-5xl md:text-8xl hurricane">Roadmaps</h2> */}
                     <h1 className=" md:text-4xl font-medium text-3xl text-center ">
                         Roadmaps
                     </h1>
                 </div>
-
+                
                 {/* Loading and Error Handling */}
                 {loading ? (
                     <p className="text-center mt-5">Loading roadmaps...</p>
