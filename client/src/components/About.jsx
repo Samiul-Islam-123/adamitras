@@ -128,32 +128,32 @@ const About = () => {
                 email: "mailto:sourishsamantaofficial@gmail.com",
             },
         },
-        // {
-        //   name: "Samriddhi Sinha",
-        //   designation: "CSE (Batch '23-'27)",
-        //   image: "/assets/tech_team/samridhhi_.jpeg",
-        //   socialLinks: {
-        //     linkedin: "https://www.linkedin.com/in/samriddhi-sinha-555768280/",
-        //     github: "https://github.com/Samriddhie",
-        //     email: "mailto:sinhasamriddhi2000@gmail.com",
-        //   },
-        // },
-        // {
-        //   name: "Aviroop Pal",
-        //   designation: "CSE (Batch '23-'27)",
-        //   image: "/assets/tech_team/aviroop.jpeg",
-        //   socialLinks: {
-        //     linkedin: "https://www.linkedin.com/in/aviroop-pal/",
-        //     github: "https://github.com/avirooppal",
-        //     email: "mailto:avirooppal42@gmail.com",
-        //   },
-        // },
+        {
+          name: "Aviroop Pal",
+          designation: "CSE (Batch '23-'27)",
+          image: "/assets/tech_team/aviroop.jpeg",
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/aviroop-pal/",
+            github: "https://github.com/avirooppal",
+            email: "mailto:avirooppal42@gmail.com",
+          },
+        },
+        {
+          name: "Samriddhi Sinha",
+          designation: "CSE (Batch '23-'27)",
+          image: "/assets/tech_team/samridhhi_.jpeg",
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/samriddhi-sinha-555768280/",
+            github: "https://github.com/Samriddhie",
+            email: "mailto:sinhasamriddhi2000@gmail.com",
+          },
+        },
     ];
     const advisory = [
         {
             name: "Dr. Radha Tamal Goswami",
             designation:
-                "Pro Vice Chancellor & Dean of Computer Science & Engineering SOET, Adamas University",
+                " Pro VC ",
             image: "/assets/faculty/RTG.jpeg",
             socialLinks: {
                 linkedin:
@@ -163,7 +163,7 @@ const About = () => {
         {
             name: "Dr. Sajal Saha",
             designation:
-                "Associate Dean, Professor & HOD Computer Science & Engineering SOET, Adamas University",
+                "Associate Dean, SOET and HoD of CSE Department",
             image: "/assets/faculty/sajal.jpeg",
             socialLinks: {
                 linkedin: "https://www.linkedin.com/in/sajalsahaofficial/",
@@ -187,11 +187,11 @@ const About = () => {
             <section className="  w-screen items-center min-h-screen md:px-[10vw] px-[5vw] md:py-[8vw]  flex   flex-col  overflow-hidden">
                 {/* <h1 className=" md:text-8xl text-5xl hurricane bg-[url('/assets/bg.png')] bg-no-repeat  bg-cover w-fit">About us</h1> */}
 
-                <div className=" md:w-3/4 p-8 md:p-28 md:my-0 my-auto bg-yellow-500/10 rounded-3xl  shadow-2xl shadow-yellow-500/25 border-4 border-yellow-200">
+                <div className=" md:w-3/4 p-8 md:p-10 md:my-0 my-auto  rounded-3xl ">
                     <h1 className="hurricane md:text-5xl text-yellow-400 font-medium text-4xl mb-10 text-center">
                         About Us
                     </h1>
-                    <p className=" text-center md:text-lg text-xs  px-1 md:mt-12 mt-5 font-light italic">
+                    <p className=" text-center md:text-md text-xs  px-1 md:mt-12 mt-5 font-light italic">
                         “We make a living by what we get, but we make a life by
                         what we give.”
                         <br />
@@ -391,7 +391,7 @@ const About = () => {
                 <h1 className="md:text-3xl font-medium text-2xl text-center">
                     Technical Team
                 </h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
                     {techTeam.map((member, index) => (
                         <div
                             key={index}
