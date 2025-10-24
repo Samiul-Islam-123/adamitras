@@ -38,6 +38,11 @@ const Career = () => {
         }
     };
 
+    // Add this function to handle PDF viewing
+    const handleSeeClick = (pdfUrl) => {
+        setSelectedPdf(pdfUrl);
+    };
+
     const options = [
         {
             name: "Roadmaps",
@@ -67,22 +72,8 @@ const Career = () => {
 
     return (
         <section className="w-screen min-h-screen flex items-center justify-start flex-col">
-            {/* <div className='grid grid-cols-2 gap-6 -mt-20'>
-        {options.map((option, index) => (
-          <button
-            key={index}
-            onClick={()=>navigate(`/${option.path}`)}
-            className={`md:w-[25vw] md:h-[25vh] w-[40vw] h-[30vh] flex flex-col items-center justify-center text-white text-xl font-semibold rounded-2xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer ${option.color}`}
-          >
-            {option.icon}
-            <h2 className='text-center mt-3'>{option.name}</h2>
-          </button>
-        ))}
-      </div> */}
-
             <div className=" w-full h-[90vh] overflow-y-auto py-20 px-10">
                 <div className="  w-full">
-                    {/* <h2 className="text-5xl md:text-8xl hurricane">Roadmaps</h2> */}
                     <h1 className=" md:text-4xl font-medium text-3xl text-center ">
                         Roadmaps
                     </h1>
@@ -114,7 +105,7 @@ const Career = () => {
 
             {/* PDF Viewer */}
             {selectedPdf && (
-                <div className="absolute inset-0 flex justify-center items-center z-50 bg-black/50">
+                <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/50">
                     <div className="bg-white p-4 rounded-lg w-[90%] h-[90%] relative">
                         <button
                             onClick={() => setSelectedPdf(null)}
