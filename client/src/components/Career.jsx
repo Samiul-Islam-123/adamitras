@@ -38,9 +38,31 @@ const Career = () => {
         }
     };
 
-    // Add this function to handle PDF viewing
+    // Fixed: Proper Google Drive PDF handling
     const handleSeeClick = (pdfUrl) => {
-        setSelectedPdf(pdfUrl);
+        // Extract file ID from Google Drive URL
+        const getFileIdFromUrl = (url) => {
+            const match = url.match(/\/d\/([^\/]+)/);
+            return match ? match[1] : null;
+        };
+
+        const fileId = getFileIdFromUrl(pdfUrl);
+        
+        if (fileId) {
+            // Use Google Drive's preview URL (same as in your Pyq component)
+            const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            setSelectedPdf(previewUrl);
+        } else {
+            // If it's not a Google Drive URL, use the original URL
+            setSelectedPdf(pdfUrl);
+        }
+    };
+
+    // Alternative: Open in new tab (similar to what might be working in Pyq)
+    const handleOpenInNewTab = () => {
+        if (selectedPdf) {
+            window.open(selectedPdf, '_blank', 'noopener,noreferrer');
+        }
     };
 
     const options = [
@@ -72,9 +94,9 @@ const Career = () => {
 
     return (
         <section className="w-screen min-h-screen flex items-center justify-start flex-col">
-            <div className=" w-full h-[90vh] overflow-y-auto py-20 px-10">
-                <div className="  w-full">
-                    <h1 className=" md:text-4xl font-medium text-3xl text-center ">
+            <div className="w-full h-[90vh] overflow-y-auto py-20 px-10">
+                <div className="w-full">
+                    <h1 className="md:text-4xl font-medium text-3xl text-center">
                         Roadmaps
                     </h1>
                 </div>
@@ -83,7 +105,7 @@ const Career = () => {
                 {loading ? (
                     <p className="text-center mt-5">Loading roadmaps...</p>
                 ) : error ? (
-                    <p className=" text-3xl mt-10 text-black/40">
+                    <p className="text-3xl mt-10 text-black/40">
                         No Roadmaps Yet.
                     </p>
                 ) : (
@@ -97,30 +119,57 @@ const Career = () => {
                                 <h3 className="text-xl font-semibold">
                                     {roadmap.name}
                                 </h3>
+                                <p className="text-sm text-gray-600 mt-2">
+                                    Click to view PDF
+                                </p>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
 
-            {/* PDF Viewer */}
+            {/* PDF Viewer Modal - Similar to Pyq component approach */}
             {selectedPdf && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/50">
-                    <div className="bg-white p-4 rounded-lg w-[90%] h-[90%] relative">
-                        <button
-                            onClick={() => setSelectedPdf(null)}
-                            className="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full"
-                        >
-                            <IoIosCloseCircle size={30} />
-                        </button>
+                    <div className="bg-white rounded-lg w-[95%] h-[95%] relative flex flex-col">
+                        {/* Header with buttons */}
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h3 className="text-lg font-semibold">PDF Viewer</h3>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={handleOpenInNewTab}
+                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                >
+                                    Open in New Tab
+                                </button>
+                                <button
+                                    onClick={() => setSelectedPdf(null)}
+                                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                                >
+                                    <IoIosCloseCircle size={24} />
+                                </button>
+                            </div>
+                        </div>
 
-                        <iframe
-                            allowFullScreen={false}
-                            sandbox="allow-scripts allow-same-origin allow-forms"
-                            src={selectedPdf}
-                            className="w-full h-full"
-                            title="PDF Viewer"
-                        ></iframe>
+                        {/* PDF Iframe - Simple like in Pyq component */}
+                        <div className="flex-1">
+                            <iframe
+                                src={selectedPdf}
+                                className="w-full h-full border-0"
+                                title="PDF Viewer"
+                                allow="autoplay"
+                            >
+                                <p className="p-4 text-center">
+                                    Your browser does not support iframes. 
+                                    <button 
+                                        onClick={handleOpenInNewTab}
+                                        className="text-blue-500 underline ml-2"
+                                    >
+                                        Open PDF in new tab
+                                    </button>
+                                </p>
+                            </iframe>
+                        </div>
                     </div>
                 </div>
             )}
