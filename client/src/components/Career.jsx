@@ -38,9 +38,8 @@ const Career = () => {
         }
     };
 
-    // Fixed: Proper Google Drive PDF handling
+    // Enhanced: Use more restrictive Google Drive URL parameters
     const handleSeeClick = (pdfUrl) => {
-        // Extract file ID from Google Drive URL
         const getFileIdFromUrl = (url) => {
             const match = url.match(/\/d\/([^\/]+)/);
             return match ? match[1] : null;
@@ -49,21 +48,54 @@ const Career = () => {
         const fileId = getFileIdFromUrl(pdfUrl);
         
         if (fileId) {
-            // Use Google Drive's preview URL (same as in your Pyq component)
-            const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            // Use more restrictive parameters to disable all toolbar actions
+            // These parameters mimic what's likely used in ShowPyqs
+            const previewUrl = `https://drive.google.com/file/d/${fileId}/preview?rm=minimal&toolbar=0&navpanes=0&viewer=0`;
             setSelectedPdf(previewUrl);
         } else {
-            // If it's not a Google Drive URL, use the original URL
+            // For non-Google Drive URLs, use blob approach as fallback
             setSelectedPdf(pdfUrl);
         }
     };
 
-    // Alternative: Open in new tab (similar to what might be working in Pyq)
-    const handleOpenInNewTab = () => {
-        if (selectedPdf) {
-            window.open(selectedPdf, '_blank', 'noopener,noreferrer');
+    // Alternative: Use the blob approach if the above doesn't work
+    const handleSeeClickAlternative = async (pdfUrl) => {
+        const getFileIdFromUrl = (url) => {
+            const match = url.match(/\/d\/([^\/]+)/);
+            return match ? match[1] : null;
+        };
+
+        const fileId = getFileIdFromUrl(pdfUrl);
+        
+        if (fileId) {
+            try {
+                // Get the direct download URL and convert to blob
+                const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                
+                const response = await fetch(directDownloadUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                setSelectedPdf(blobUrl);
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                // Fallback to preview mode
+                const previewUrl = `https://drive.google.com/file/d/${fileId}/preview?rm=minimal`;
+                setSelectedPdf(previewUrl);
+            }
+        } else {
+            setSelectedPdf(pdfUrl);
         }
     };
+
+    // Clean up blob URLs
+    useEffect(() => {
+        return () => {
+            if (selectedPdf && selectedPdf.startsWith('blob:')) {
+                URL.revokeObjectURL(selectedPdf);
+            }
+        };
+    }, [selectedPdf]);
 
     const options = [
         {
@@ -101,7 +133,6 @@ const Career = () => {
                     </h1>
                 </div>
                 
-                {/* Loading and Error Handling */}
                 {loading ? (
                     <p className="text-center mt-5">Loading roadmaps...</p>
                 ) : error ? (
@@ -115,6 +146,8 @@ const Career = () => {
                                 key={roadmap.id}
                                 className="p-5 bg-gray-100 shadow-lg rounded-lg cursor-pointer hover:bg-gray-200 transition"
                                 onClick={() => handleSeeClick(roadmap.viewLink)}
+                                // Uncomment the line below if the first approach doesn't work
+                                // onClick={() => handleSeeClickAlternative(roadmap.viewLink)}
                             >
                                 <h3 className="text-xl font-semibold">
                                     {roadmap.name}
@@ -128,45 +161,41 @@ const Career = () => {
                 )}
             </div>
 
-            {/* PDF Viewer Modal - Similar to Pyq component approach */}
+            {/* PDF Viewer Modal */}
             {selectedPdf && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/50">
                     <div className="bg-white rounded-lg w-[95%] h-[95%] relative flex flex-col">
-                        {/* Header with buttons */}
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h3 className="text-lg font-semibold">PDF Viewer</h3>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={handleOpenInNewTab}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                                >
-                                    Open in New Tab
-                                </button>
-                                <button
-                                    onClick={() => setSelectedPdf(null)}
-                                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-                                >
-                                    <IoIosCloseCircle size={24} />
-                                </button>
-                            </div>
+                        {/* Header */}
+                        <div className="flex justify-end items-center p-4 border-b">
+                            <button
+                                onClick={() => {
+                                    if (selectedPdf.startsWith('blob:')) {
+                                        URL.revokeObjectURL(selectedPdf);
+                                    }
+                                    setSelectedPdf(null);
+                                }}
+                                className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                            >
+                                <IoIosCloseCircle size={24} />
+                            </button>
                         </div>
 
-                        {/* PDF Iframe - Simple like in Pyq component */}
-                        <div className="flex-1">
+                        {/* PDF Iframe with additional restrictions */}
+                        <div className="flex-1 w-full h-full">
                             <iframe
                                 src={selectedPdf}
                                 className="w-full h-full border-0"
                                 title="PDF Viewer"
+                                // Additional restrictions
+                                sandbox="allow-scripts allow-same-origin"
                                 allow="autoplay"
+                                onContextMenu={(e) => e.preventDefault()}
+                                style={{ 
+                                    pointerEvents: 'auto'
+                                }}
                             >
                                 <p className="p-4 text-center">
-                                    Your browser does not support iframes. 
-                                    <button 
-                                        onClick={handleOpenInNewTab}
-                                        className="text-blue-500 underline ml-2"
-                                    >
-                                        Open PDF in new tab
-                                    </button>
+                                    Your browser does not support iframes.
                                 </p>
                             </iframe>
                         </div>
