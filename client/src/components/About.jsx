@@ -153,7 +153,7 @@ const About = () => {
         {
             name: "Dr. Radha Tamal Goswami",
             designation:
-                " Pro VC ",
+                " Pro VC, Adamas University",
             image: "/assets/faculty/RTG.jpeg",
             socialLinks: {
                 linkedin:
@@ -163,7 +163,7 @@ const About = () => {
         {
             name: "Dr. Sajal Saha",
             designation:
-                "Associate Dean, SOET and HoD of CSE Department",
+                "Associate Dean, SOET and HoD of CSE Department, Adamas University",
             image: "/assets/faculty/sajal.jpeg",
             socialLinks: {
                 linkedin: "https://www.linkedin.com/in/sajalsahaofficial/",
