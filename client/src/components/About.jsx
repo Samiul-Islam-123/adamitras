@@ -151,9 +151,9 @@ const About = () => {
     ];
     const advisory = [
         {
-            name: "Dr. Radha Tamal Goswami",
+            name: "Prof. (Dr.) Radha Tamal Goswami",
             designation:
-                " Pro VC, Adamas University",
+                "Pro Vice Chancellor, Dean, School of Engineering & Technology, Adamas University",
             image: "/assets/faculty/RTG.jpeg",
             socialLinks: {
                 linkedin:
@@ -161,9 +161,9 @@ const About = () => {
             },
         },
         {
-            name: "Dr. Sajal Saha",
+            name: "Prof. (Dr.) Sajal Saha",
             designation:
-                "Associate Dean, SOET and HoD of CSE Department, Adamas University",
+                "Associate Dean, School of Engineering and Technology and HoD (CSE Department), Adamas University",
             image: "/assets/faculty/sajal.jpeg",
             socialLinks: {
                 linkedin: "https://www.linkedin.com/in/sajalsahaofficial/",
@@ -245,10 +245,10 @@ const About = () => {
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <h2 className="mt-3 text-lg font-semibold">
+                            <h2 className="mt-3 text-center text-sm font-semibold">
                                 {founder.name}
                             </h2>
-                            <p className="text-sm text-center text-gray-600">
+                            <p className="text-xs text-center mt-1 text-gray-600">
                                 {founder.designation}
                             </p>
                             <ul className="flex gap-3 mt-2">
